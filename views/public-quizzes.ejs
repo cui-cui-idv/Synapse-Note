@@ -1,0 +1,34 @@
+<%- include('partials/header') %>
+
+<div class="list-page-container">
+    <div class="list-page-header">
+        <h2 class="page-title">公開テスト一覧</h2>
+        <p class="page-description">他のユーザーが作成した公開テストに挑戦できます。</p>
+    </div>
+
+    <% if (quizzes && quizzes.length > 0) { %>
+        <div class="quiz-list">
+            <% quizzes.forEach(quiz => { %>
+                <div class="quiz-list-item">
+                    <div class="quiz-info">
+                        <h3 class="quiz-title"><%= quiz.title %></h3>
+                        <div class="quiz-meta">
+                            <span class="meta-item">科目: <%= quiz.subject %></span>
+                            <span class="meta-item">学年: <%= quiz.difficulty %></span>
+                            <span class="meta-item">作成者: <%= quiz.ownerUsername %></span>
+                        </div>
+                    </div>
+                    <div class="quiz-actions">
+                        <a href="/quiz/<%= quiz.id %>" class="button">このテストに挑戦する</a>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="no-content-message">
+            <p>現在、公開されているテストはありません。</p>
+        </div>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %>

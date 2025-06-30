@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2 class="page-title">ダッシュボード</h2>
+        <p class="welcome-message">ようこそ、<%= user.username %>さん！ここから始めましょう。</p>
+    </div>
+
+    <div class="action-list">
+        <!-- クイズ作成カード -->
+        <a href="/create-quiz" class="action-card">
+            <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            </div>
+            <div class="card-content">
+                <h3>新しい問題を作成する</h3>
+                <p>科目や難易度を指定して、AIにオリジナルの問題を作成させます。</p>
+            </div>
+        </a>
+
+        <!-- 作成した問題一覧カード -->
+        <a href="/my-quizzes" class="action-card">
+            <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </div>
+            <div class="card-content">
+                <h3>作成した問題一覧</h3>
+                <p>自分が作成した問題の確認、再挑戦、編集ができます。</p>
+            </div>
+        </a>
+
+        <!-- 公開テスト一覧カード -->
+        <a href="/public-quizzes" class="action-card">
+            <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+            </div>
+            <div class="card-content">
+                <h3>公開テストを探す</h3>
+                <p>他のユーザーが作成した公開テストに挑戦できます。</p>
+            </div>
+        </a>
+
+        <a href="/my-history" class="action-card">
+            <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 9 8 12 2 12"/><path d="M5.45 5.45 2 2v6h6L5.45 5.45z"/></svg>
+            </div>
+            <div class="card-content">
+                <h3>挑戦履歴を見る</h3>
+                <p>過去のテスト結果とスコアの推移を確認できます。</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

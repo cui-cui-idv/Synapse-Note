@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse Note</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1><a href="/">Synapse Note</a></h1>
+            <nav>
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <a href="/public-quizzes">公開テスト</a>
+                    <a href="/my-quizzes">作成一覧</a>
+                    <a href="/my-history">挑戦履歴</a>
+                    <span><a href="/dashboard"><%= user.username %></a></span>
+                    <a href="/logout">ログアウト</a>
+                <% } else { %>
+                    <a href="/public-quizzes">公開テスト</a>
+                    <a href="/login">ログイン</a>
+                    <a href="/register">新規登録</a>
+                <% } %>
+            </nav>
+        </div>
+    </header>
+    <main>

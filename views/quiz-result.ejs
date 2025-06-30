@@ -1,0 +1,56 @@
+<%- include('partials/header') %>
+
+<div class="result-container">
+    <div class="result-header">
+        <h2 class="page-title"><%= quiz.title %> - 結果</h2>
+        <div class="score-summary">
+            <p class="final-score"><%= totalScore %> / <%= maxScore %> 点</p>
+            <p class="result-message">挑戦お疲れ様でした！結果は自動的に「挑戦履歴」に保存されました。</p>
+        </div>
+    </div>
+
+    <!-- 結果詳細 (変更なし) -->
+    <div class="result-list">
+        <% results.forEach((r, index) => { %>
+            <div class="result-card <%= r.is_correct ? 'correct' : 'incorrect' %>">
+                <div class="question-title">
+                    <div class="question-number-container">
+                        <span class="question-number">問題 <%= index + 1 %></span>
+                        <span class="result-indicator"><%= r.is_correct ? '正解' : '不正解' %></span>
+                    </div>
+                    <span class="question-points"><%= r.score %> / <%= r.points %> 点</span>
+                </div>
+                <p class="question-text"><%= r.question %></p>
+                <div class="answer-section">
+                    <strong>あなたの解答:</strong>
+                    <p class="user-answer"><%= r.user_answer || '（無解答）' %></p>
+                </div>
+                <div class="feedback-section">
+                    <strong>AIによるフィードバック:</strong>
+                    <p><%= r.feedback %></p>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+    <!-- ★★★ 所有確定アクション ★★★ -->
+    <div class="result-actions-final">
+        <% if (isDraft) { %>
+            <!-- 下書きクイズの場合、「所有」を決定するフォームを表示 -->
+            <form action="/save-quiz-from-draft" method="POST" class="save-draft-form">
+                <input type="hidden" name="quizData" value="<%= JSON.stringify(quiz) %>">
+                <p>このテストを「作成したテスト一覧」に保存しますか？</p>
+                <div class="form-actions-split">
+                    <a href="/dashboard" class="button-secondary">保存せずに終了</a>
+                    <button type="submit" class="button">このテストを保存する</button>
+                </div>
+            </form>
+        <% } else { %>
+            <!-- 保存済みクイズの場合、終了オプションのみ -->
+            <div class="form-actions">
+                 <a href="/my-history" class="button-secondary">履歴一覧へ</a>
+                 <a href="/dashboard" class="button">ダッシュボードへ戻る</a>
+            </div>
+        <% } %>
+    </div>
+</div>

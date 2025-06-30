@@ -1,0 +1,545 @@
+/* === Synapse Note: The Absolute Final Reconstruction - NO DELETIONS (Version 6.0) === */
+
+/* --- 1. Global Settings & Font Imports (FROM YOUR Ver 4.0) --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+:root {
+    --primary-color: #4A90E2;
+    --primary-hover-color: #357ABD;
+    --danger-color: #D93025;
+    --danger-hover-color: #B0261E;
+    --correct-color: #28A745;
+    --background-color: #F8F9FA;
+    --surface-color: #FFFFFF;
+    --text-color: #212529;
+    --muted-text-color: #6c757d;
+    --border-color: #DEE2E6;
+    --font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* --- 2. General Reset & Body (MODIFIED FOR CENTERING) --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { height: 100%; }
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex; /* MODIFICATION: Enabled flexbox for layout */
+    flex-direction: column; /* MODIFICATION: Arranged items vertically */
+    min-height: 100%;
+}
+main {
+    flex-grow: 1; /* MODIFICATION: Allowed main content to fill space */
+    width: 100%;
+    padding: 2rem 1rem;
+    display: flex; /* MODIFICATION: Enabled flexbox for centering */
+    flex-direction: column; /* MODIFICATION: Arranged items vertically */
+    justify-content: center; /* MODIFICATION: Centered content vertically */
+    align-items: center; /* MODIFICATION: Centered content horizontally */
+}
+
+/* --- 3. Shared Components (FROM YOUR Ver 4.0) --- */
+header {
+    background-color: var(--surface-color); padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: sticky; top: 0; z-index: 1000; width: 100%;
+    flex-shrink: 0; /* ADDED: Prevents header from shrinking */
+}
+.header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+header h1 a { color: var(--text-color); text-decoration: none; font-size: 1.5rem; font-weight: 700; }
+header nav { display: flex; align-items: center; gap: 1.5rem; }
+header nav a, header nav span { color: var(--muted-text-color); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+header nav a:hover { color: var(--primary-color); }
+header nav span a { color: var(--text-color); font-weight: 600; }
+
+footer {
+    text-align: center; padding: 2.5rem; color: var(--muted-text-color); font-size: 0.9rem;
+    margin-top: auto; width: 100%;
+    flex-shrink: 0; /* ADDED: Prevents footer from shrinking */
+}
+
+.button, .button-secondary, .button-danger {
+    display: inline-block; padding: 12px 20px; border-radius: var(--border-radius); font-size: 1rem; font-weight: 600;
+    cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s ease; border: 2px solid transparent;
+}
+.button { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+.button:hover { background-color: var(--primary-hover-color); border-color: var(--primary-hover-color); }
+.button-secondary { background-color: transparent; color: var(--primary-color); border-color: var(--primary-color); }
+.button-secondary:hover { background-color: var(--primary-color); color: #fff; }
+.button-danger { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
+.button-danger:hover { background-color: var(--danger-hover-color); border-color: var(--danger-hover-color); }
+.button:active, .button-secondary:active, .button-danger:active { transform: scale(0.98); }
+
+/* --- 4. ★★★ NEW STYLES for Home/Welcome Page ★★★ --- */
+.welcome-container { text-align: center; max-width: 700px; }
+.welcome-container h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+.welcome-container p { font-size: 1.1rem; color: var(--muted-text-color); margin-bottom: 1.5rem; }
+.welcome-container p a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
+.welcome-container p a:hover { text-decoration: underline; }
+
+/* --- 5. MODIFIED Authentication Pages (Login & Register) --- */
+/* Your existing .auth-container is now used as the main card */
+.auth-container {
+    width: 100%; max-width: 420px; margin-left: auto; margin-right: auto;
+    background: var(--surface-color); /* MODIFICATION: Added background and shadow */
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+.auth-container .page-title { text-align: center; font-size: 1.8rem; font-weight: 700; margin-bottom: 2rem; }
+.auth-container form { display: flex; flex-direction: column; width: 100%; }
+.auth-container .form-group { margin-bottom: 1.5rem; }
+.auth-container label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; }
+.auth-container input {
+    width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 1rem;
+    font-family: var(--font-family); transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.auth-container input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25); }
+.auth-container button { width: 100%; padding: 12px 20px; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; }
+.auth-container .form-footer-text { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; }
+.auth-container .form-footer-text a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
+.auth-container .form-footer-text a:hover { text-decoration: underline; }
+
+/* ★★★ NEW ★★★ Error message styling for login page */
+.error-message {
+    padding: 1rem; background-color: #F8D7DA; color: #721C24;
+    border: 1px solid #F5C6CB; border-radius: var(--border-radius); margin-bottom: 1.5rem; text-align: center;
+}
+
+
+/* --- 6. Dashboard Page --- */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.dashboard-header .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.dashboard-header .welcome-message {
+    font-size: 1.2rem;
+    color: var(--muted-text-color);
+    margin-top: 0.5rem;
+}
+
+/* Action Cards Grid Layout */
+.action-list {
+    display: grid;
+    /* Creates a responsive grid that fits as many columns as possible */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.action-card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    display: flex;
+    align-items: flex-start; /* Align icon and text to the top */
+    gap: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+    flex-shrink: 0;
+    /* A light, appealing background for the icon */
+    background-color: #eaf2fd; 
+    color: var(--primary-color);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.card-content h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color);
+}
+
+.card-content p {
+    font-size: 0.95rem;
+    color: var(--muted-text-color);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* --- 7. Quiz & History List Pages --- */
+/* This CSS block styles all list pages, including the public quiz list. */
+.list-page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 1rem;
+}
+
+.list-page-header .page-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.list-page-header .page-description {
+    font-size: 1.1rem;
+    color: var(--muted-text-color);
+    margin-bottom: 2rem;
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.quiz-list, .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* Space between list items */
+}
+
+.quiz-list-item, .history-list-item {
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quiz-list-item:hover, .history-list-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-info, .history-info {
+    flex-grow: 1;
+    min-width: 300px; /* Prevent info from getting too squished */
+}
+
+.quiz-title, .history-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.quiz-meta, .history-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem; /* Vertical and horizontal gap */
+    font-size: 0.9rem;
+    color: var(--muted-text-color);
+    align-items: center;
+}
+
+.quiz-actions {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+/* Styles for history score (won't apply here but kept for consistency) */
+.history-score {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 120px;
+}
+.history-score span { font-size: 0.85rem; color: var(--muted-text-color); margin-bottom: 0.25rem; }
+.history-score p { font-size: 1.6rem; font-weight: 700; color: var(--primary-color); margin: 0; line-height: 1; }
+
+/* --- 8. Generic Form Pages (Quiz Creation, etc.) --- */
+.form-container { 
+    background: var(--surface-color); 
+    padding: 2.5rem 3rem; /* Add more horizontal padding */
+    border-radius: var(--border-radius); 
+    box-shadow: var(--box-shadow); 
+}
+
+.form-container .page-title { 
+    text-align: center; 
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem; /* Adjust margin */
+}
+
+.form-container .form-description { 
+    text-align: center; 
+    color: var(--muted-text-color); 
+    margin-bottom: 2.5rem; /* Add more space before the form starts */
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-container form { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 1.75rem; /* Add more space between form groups */
+}
+
+.form-container .form-group { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 0.5rem; /* Space between label and input */
+}
+
+.form-container label { 
+    font-weight: 600; 
+    font-size: 0.95rem; 
+    color: var(--text-color);
+}
+
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container select,
+.form-container textarea {
+    width: 100%; 
+    padding: 12px 16px; 
+    border: 1px solid var(--border-color); 
+    border-radius: var(--border-radius); 
+    font-size: 1rem;
+    font-family: var(--font-family);
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Custom arrow for select dropdowns for a consistent look */
+.form-container select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; /* Make space for the arrow */
+}
+
+.form-container input:focus, 
+.form-container select:focus, 
+.form-container textarea:focus { 
+    outline: none; 
+    border-color: var(--primary-color); 
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25); 
+}
+
+.form-container textarea { 
+    resize: vertical; 
+    min-height: 120px; 
+}
+
+/* Helper text styling for notes below inputs */
+.form-container .form-text {
+    font-size: 0.85rem;
+    color: var(--muted-text-color);
+    margin-top: 0.25rem;
+}
+
+/* Main action button styling */
+.form-container button[type="submit"].button {
+    width: 100%;
+    margin-top: 1rem; /* Add space above the button */
+    padding: 14px 24px;
+    font-size: 1.1rem;
+}
+
+/* --- Styles for other form types (kept for compatibility) --- */
+.form-actions { display: flex; gap: 1rem; justify-content: flex-end; }
+.form-actions-split { display: flex; justify-content: space-between; align-items: center; }
+.form-divider { border: none; border-top: 1px solid var(--border-color); margin: 1rem 0; }
+.question-editor-list { display: flex; flex-direction: column; gap: 2rem; }
+.question-editor-card { background: #fdfdff; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); }
+.question-editor-title { font-size: 1rem; font-weight: 600; color: var(--primary-color); }
+
+/* --- 9. Solve Quiz Page (UI Enhancement) --- */
+/* .solve-quiz-container or .form-container can be used for the quiz page */
+.solve-quiz-container .page-title,
+.form-container .page-title { 
+    text-align: center; 
+    font-size: 2rem; 
+    margin-bottom: 2rem; 
+}
+
+.question-list { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 2.5rem; /* Questions are more separated */
+}
+
+.question-card { 
+    background: var(--surface-color); 
+    border-radius: var(--border-radius); 
+    padding: 2rem; 
+    box-shadow: var(--box-shadow); 
+}
+
+.question-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: baseline; 
+    border-bottom: 1px solid var(--border-color); 
+    padding-bottom: 0.75rem; 
+    margin-bottom: 1.5rem; 
+}
+
+.question-header h4 { 
+    font-size: 1.2rem; 
+    color: var(--text-color);
+}
+
+.question-header span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.question-text { 
+    font-size: 1.1rem; 
+    line-height: 1.7;
+    margin-bottom: 2rem; 
+}
+
+/* --- ★★★ Multiple Choice Option Styling (Key Improvement) ★★★ --- */
+.options-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* Reduced gap for a tighter list */
+}
+
+.option-label {
+    display: block; /* Changed to block for full width */
+    position: relative; /* For custom radio button positioning */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hide the default radio button */
+.option-label input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+/* Style for the visible part of the label */
+.option-label span {
+    display: block;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--surface-color);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.option-label:hover span {
+    border-color: var(--primary-hover-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+/* Style for the selected option */
+.option-label input[type="radio"]:checked + span {
+    background-color: #eaf2fd; /* Light blue background */
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 600;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
+}
+
+
+/* --- Styling for other answer types --- */
+.answer-input-group input[type="text"],
+.answer-input-group textarea {
+    width: 100%; 
+    padding: 12px 16px; 
+    border: 1px solid var(--border-color); 
+    border-radius: var(--border-radius); 
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.answer-input-group input[type="text"]:focus,
+.answer-input-group textarea:focus {
+    outline: none; 
+    border-color: var(--primary-color); 
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
+}
+
+.answer-input-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+/* --- 10. UNTOUCHED Solve Quiz Page (FROM YOUR Ver 4.0) --- */
+.solve-quiz-container .page-title { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
+.question-list { display: flex; flex-direction: column; gap: 2rem; }
+.question-card { background: var(--surface-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--box-shadow); }
+.question-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.5rem; }
+.question-header h4 { font-size: 1.2rem; }
+.question-text { font-size: 1.1rem; margin-bottom: 2rem; }
+.options-group { display: flex; flex-direction: column; gap: 1rem; }
+.option-label { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); cursor: pointer; transition: background-color 0.2s, border-color 0.2s; }
+.option-label:hover { background-color: #f8f9fa; }
+.option-label input[type="radio"] { accent-color: var(--primary-color); }
+.option-label.selected { border-color: var(--primary-color); background-color: #eaf2fd; }
+
+/* --- 11. UNTOUCHED Quiz Result Page (FROM YOUR Ver 4.0) --- */
+.result-header { text-align: center; padding: 2rem; background-color: var(--surface-color); border-radius: var(--border-radius); margin-bottom: 2rem; box-shadow: var(--box-shadow); }
+.final-score { font-size: 2.5rem; font-weight: 700; color: var(--primary-color); }
+.result-message { font-size: 1.1rem; color: var(--muted-text-color); }
+.result-list { display: flex; flex-direction: column; gap: 1.5rem; }
+.result-card { background: var(--surface-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--box-shadow); border-left: 5px solid; }
+.result-card.correct { border-left-color: var(--correct-color); }
+.result-card.incorrect { border-left-color: var(--danger-color); }
+.result-card .question-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.question-number { font-size: 1.1rem; font-weight: 700; }
+.result-indicator { padding: 0.25rem 0.75rem; border-radius: 999px; font-weight: 600; color: #fff; }
+.result-card.correct .result-indicator { background-color: var(--correct-color); }
+.result-card.incorrect .result-indicator { background-color: var(--danger-color); }
+.user-answer { background-color: #F8F9FA; padding: 1rem; border-radius: var(--border-radius); }
+.result-actions-final { margin-top: 3rem; text-align: center; }
+
+/* --- 12. UNTOUCHED Utilities (FROM YOUR Ver 4.0) --- */
+.no-content-message { text-align: center; padding: 3rem; background-color: var(--surface-color); border: 1px dashed var(--border-color); border-radius: var(--border-radius); }
+.no-content-message p { margin-bottom: 1.5rem; color: var(--muted-text-color); }
+
+/* --- 13. UNTOUCHED Responsive Design (FROM YOUR Ver 4.0) --- */
+@media (max-width: 768px) {
+    body { font-size: 15px; }
+    main { padding: 1rem; }
+    header { padding: 0.75rem 1rem; }
+    /* MODIFIED: auth-container padding for mobile */
+    .auth-container, .form-container { padding: 1.5rem; }
+    .quiz-list-item, .history-list-item { flex-direction: column; align-items: flex-start; }
+    .quiz-actions, .history-score { width: 100%; margin-top: 1rem; }
+    .form-actions-split { flex-direction: column; gap: 1rem; align-items: stretch; }
+    .form-actions-split .button-danger { order: 2; }
+    .form-actions-split .main-actions { order: 1; width: 100%; }
+}

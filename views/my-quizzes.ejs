@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<div class="list-page-container">
+    <div class="list-page-header">
+        <h2 class="page-title">作成したテスト一覧</h2>
+        <p class="page-description">自分が作成した問題の確認、再挑戦、編集ができます。</p>
+        <a href="/create-quiz" class="button">新しいテストを作成</a>
+    </div>
+
+    <% if (quizzes && quizzes.length > 0) { %>
+        <div class="quiz-list">
+            <% quizzes.forEach(quiz => { %>
+                <div class="quiz-list-item">
+                    <div class="quiz-info">
+                        <h3 class="quiz-title"><%= quiz.title %></h3>
+                        <div class="quiz-meta">
+                            <span class="meta-item">科目: <%= quiz.subject %></span>
+                            <span class="meta-item">学年: <%= quiz.difficulty %></span>
+                            <span class="meta-item">作成日: <%= new Date(quiz.createdAt).toLocaleDateString() %></span>
+                            <span class="meta-item visibility-tag <%= quiz.visibility %>">
+                                <%= quiz.visibility === 'public' ? '公開' : (quiz.visibility === 'unlisted' ? '限定公開' : '非公開') %>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="quiz-actions">
+                        <a href="/quiz/<%= quiz.id %>" class="button-secondary">挑戦する</a>
+                        <a href="/quiz/<%= quiz.id %>/edit" class="button">編集</a>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="no-content-message">
+            <p>まだ作成されたテストはありません。</p>
+            <a href="/create-quiz" class="button">最初のテストを作成する</a>
+        </div>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %>
