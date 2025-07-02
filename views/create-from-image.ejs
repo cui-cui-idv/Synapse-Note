@@ -10,32 +10,75 @@
         <% } %>
 
         <form action="/quiz/generate-from-image" method="POST" enctype="multipart/form-data">
-            
+            <!-- 画像ファイル -->
             <div class="form-group">
                 <label for="textbookImage">画像ファイル:</label>
-                
-                <!-- ★★★ この部分がCSS適用のための重要な構造です ★★★ -->
                 <div class="file-input-wrapper">
-                    <label for="textbookImage" class="file-input-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
-                        <span class="text">ファイルを選択</span>
+                    <label for="textbookImage" class="file-input-label" id="fileInputLabel">
+                        <!-- SVGアイコン例（カメラ/画像）-->
+                        <svg class="icon" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                          <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                          <circle cx="12" cy="13" r="3.2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                          <path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span class="text">ファイルを選択 または 撮影</span>
                         <span class="subtext">または、ここにドラッグ＆ドロップ</span>
                     </label>
                     <input type="file" id="textbookImage" name="textbookImage" accept="image/*" required>
                 </div>
                 <div id="fileNameDisplay" class="file-name-display"></div>
-                <!-- ★★★ ここまで ★★★ -->
-
+                <!-- プレビュー画像（選択時のみ表示） -->
+                <div class="image-preview-wrapper">
+                  <img id="preview" class="image-preview" style="display:none;">
+                </div>
             </div>
 
+            <!-- 科目 -->
             <div class="form-group">
                 <label for="subject">科目:</label>
-                <input type="text" id="subject" name="subject" required placeholder="例: 中学英語">
+                <select id="subject" name="subject" required>
+                    <option value="" disabled selected>科目を選択してください</option>
+                    <option value="国語">国語</option>
+                    <option value="数学">数学</option>
+                    <option value="理科">理科</option>
+                    <option value="社会">社会</option>
+                    <option value="英語">英語</option>
+                    <option value="その他">その他</option>
+                </select>
             </div>
+
+            <!-- 分野・テーマ -->
+            <div class="form-group">
+                <label for="topic">分野・テーマ（任意）:</label>
+                <input type="text" id="topic" name="topic" placeholder="例: 植物のつくりと働き, 2次方程式, 日本の歴史 など">
+            </div>
+
+            <!-- 参考情報 -->
+            <div class="form-group">
+                <label for="example">参考情報・補足（任意）:</label>
+                <textarea id="example" name="example" rows="2" placeholder="より出題してほしいポイントや、画像情報の補足など"></textarea>
+            </div>
+
+            <!-- 対象学年 -->
             <div class="form-group">
                 <label for="difficulty">対象学年（目安）:</label>
-                <input type="text" id="difficulty" name="difficulty" required placeholder="例: 中学2年生">
+                <select id="difficulty" name="difficulty" required>
+                    <option value="" disabled selected>学年を選択してください</option>
+                    <option value="小学校低学年">小学校低学年</option>
+                    <option value="小学校中学年">小学校中学年</option>
+                    <option value="小学校高学年">小学校高学年</option>
+                    <option value="中学校1年生">中学校1年生</option>
+                    <option value="中学校2年生">中学校2年生</option>
+                    <option value="中学校3年生">中学校3年生</option>
+                    <option value="高校1年生">高校1年生</option>
+                    <option value="高校2年生">高校2年生</option>
+                    <option value="高校3年生">高校3年生</option>
+                    <option value="大学レベル">大学レベル</option>
+                    <option value="一般">一般</option>
+                </select>
             </div>
+
+            <!-- 問題数 -->
             <div class="form-group">
                 <label for="num_questions">問題数:</label>
                 <input type="number" id="num_questions" name="num_questions" min="1" max="20" value="5" required>
@@ -49,14 +92,49 @@
 <%- include('partials/footer') %>
 
 <script>
-  // ファイルが選択されたら、ファイル名を表示する
+  // ファイルが選択されたら、ファイル名を表示する＋画像プレビュー
   const fileInput = document.getElementById('textbookImage');
   const fileNameDisplay = document.getElementById('fileNameDisplay');
+  const preview = document.getElementById('preview');
   fileInput.addEventListener('change', function() {
     if (this.files && this.files.length > 0) {
       fileNameDisplay.textContent = `選択中のファイル: ${this.files[0].name}`;
+      // 画像プレビュー
+      const file = this.files[0];
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          preview.src = evt.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.style.display = 'none';
+      }
     } else {
       fileNameDisplay.textContent = '';
+      preview.style.display = 'none';
+    }
+  });
+
+  // ドラッグ＆ドロップ対応
+  const fileInputLabel = document.getElementById('fileInputLabel');
+  fileInputLabel.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    fileInputLabel.classList.add('dragover');
+  });
+  fileInputLabel.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    fileInputLabel.classList.remove('dragover');
+  });
+  fileInputLabel.addEventListener('drop', function(e) {
+    e.preventDefault();
+    fileInputLabel.classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      fileInput.files = e.dataTransfer.files;
+      // 手動でchangeイベントを発火
+      const event = new Event('change');
+      fileInput.dispatchEvent(event);
     }
   });
 </script>

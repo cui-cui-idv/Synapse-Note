@@ -7,7 +7,7 @@
     </div>
 
     <div class="action-list">
-        <!-- クイズ作成カード (テキスト) -->
+        <!-- クイズ作成カード (テキストAI自動) -->
         <a href="/quiz/create" class="action-card">
             <div class="card-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
@@ -18,7 +18,7 @@
             </div>
         </a>
         
-        <!-- ★★★ NEW: 画像からクイズ作成カード ★★★ -->
+        <!-- 画像からクイズ作成カード -->
         <a href="/quiz/create-from-image" class="action-card">
             <div class="card-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
@@ -26,6 +26,25 @@
             <div class="card-content">
                 <h3>画像から問題を作成する</h3>
                 <p>教科書やノートの写真をアップロードして、問題を自動生成します。</p>
+            </div>
+        </a>
+
+        <!-- ★ 手動でクイズ作成カード（追加） -->
+        <a href="/quiz/manual-create" class="action-card">
+            <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="16" rx="2" ry="2"/>
+                    <path d="M8 2v4"/>
+                    <path d="M16 2v4"/>
+                    <path d="M3 10h18"/>
+                    <path d="M8 14h0.01"/>
+                    <path d="M12 14h0.01"/>
+                    <path d="M16 14h0.01"/>
+                </svg>
+            </div>
+            <div class="card-content">
+                <h3>手動で問題を作成する</h3>
+                <p>AIを使わず、自分で自由に問題・選択肢・答えを入力してクイズを作成します。</p>
             </div>
         </a>
 

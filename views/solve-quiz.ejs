@@ -3,6 +3,9 @@
 <div class="form-container">
     <form action="/quiz/submit" method="POST">
         <h2 class="page-title"><%= quiz.title %></h2>
+                <% if (locals.error) { %>
+            <div class="error-message"><%= error %></div>
+        <% } %>
         
         <!-- 
             このフォームは2つのケースで使われます:

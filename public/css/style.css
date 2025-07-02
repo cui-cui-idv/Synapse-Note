@@ -1,849 +1,1119 @@
 /* === Synapse Note: The Absolute Final Reconstruction - NO DELETIONS (Version 6.0) === */
 
-/* --- 1. Global Settings & Font Imports (FROM YOUR Ver 4.0) --- */
+/* -----------------------------------------------------------------
+   1. Global Settings & Font Imports
+------------------------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
 :root {
-    --primary-color: #4A90E2;
-    --primary-hover-color: #357ABD;
-    --danger-color: #D93025;
-    --danger-hover-color: #B0261E;
-    --correct-color: #28A745;
-    --background-color: #F8F9FA;
-    --surface-color: #FFFFFF;
-    --text-color: #212529;
-    --muted-text-color: #6c757d;
-    --border-color: #DEE2E6;
-    --font-family: 'Inter', 'Noto Sans JP', sans-serif;
-    --border-radius: 8px;
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --primary-color: #4A90E2;
+  --primary-hover-color: #357ABD;
+  --danger-color: #D93025;
+  --danger-hover-color: #B0261E;
+  --correct-color: #28A745;
+  --background-color: #F8F9FA;
+  --surface-color: #FFFFFF;
+  --text-color: #212529;
+  --muted-text-color: #6c757d;
+  --border-color: #DEE2E6;
+  --font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* --- 2. General Reset & Body (MODIFIED FOR CENTERING) --- */
+/* -----------------------------------------------------------------
+   2. Reset & Body Layout
+------------------------------------------------------------------- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { height: 100%; }
 body {
-    font-family: var(--font-family);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    display: flex; /* MODIFICATION: Enabled flexbox for layout */
-    flex-direction: column; /* MODIFICATION: Arranged items vertically */
-    min-height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 main {
-    flex-grow: 1; /* MODIFICATION: Allowed main content to fill space */
-    width: 100%;
-    padding: 2rem 1rem;
-    display: flex; /* MODIFICATION: Enabled flexbox for centering */
-    flex-direction: column; /* MODIFICATION: Arranged items vertically */
-    justify-content: center; /* MODIFICATION: Centered content vertically */
-    align-items: center; /* MODIFICATION: Centered content horizontally */
+  flex-grow: 1;
+  width: 100%;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-/* --- 3. Shared Components (FROM YOUR Ver 4.0) --- */
+/* -----------------------------------------------------------------
+   3. Header & Footer
+------------------------------------------------------------------- */
 header {
-    background-color: var(--surface-color); padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    position: sticky; top: 0; z-index: 1000; width: 100%;
-    flex-shrink: 0; /* ADDED: Prevents header from shrinking */
+  background-color: var(--surface-color);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  flex-shrink: 0;
 }
-.header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-header h1 a { color: var(--text-color); text-decoration: none; font-size: 1.5rem; font-weight: 700; }
-header nav { display: flex; align-items: center; gap: 1.5rem; }
-header nav a, header nav span { color: var(--muted-text-color); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+header nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+header nav a,
+header nav span {
+  color: var(--muted-text-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
 header nav a:hover { color: var(--primary-color); }
-header nav span a { color: var(--text-color); font-weight: 600; }
-
+header nav span a {
+  color: var(--text-color);
+  font-weight: 600;
+}
 footer {
-    text-align: center; padding: 2.5rem; color: var(--muted-text-color); font-size: 0.9rem;
-    margin-top: auto; width: 100%;
-    flex-shrink: 0; /* ADDED: Prevents footer from shrinking */
+  text-align: center;
+  padding: 2.5rem;
+  color: var(--muted-text-color);
+  font-size: 0.9rem;
+  margin-top: auto;
+  width: 100%;
+  flex-shrink: 0;
 }
 
+/* -----------------------------------------------------------------
+   4. Buttons (Primary/Secondary/Danger)
+------------------------------------------------------------------- */
 .button, .button-secondary, .button-danger {
-    display: inline-block; padding: 12px 20px; border-radius: var(--border-radius); font-size: 1rem; font-weight: 600;
-    cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s ease; border: 2px solid transparent;
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 2px solid transparent;
 }
-.button { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
-.button:hover { background-color: var(--primary-hover-color); border-color: var(--primary-hover-color); }
-.button-secondary { background-color: transparent; color: var(--primary-color); border-color: var(--primary-color); }
-.button-secondary:hover { background-color: var(--primary-color); color: #fff; }
-.button-danger { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
-.button-danger:hover { background-color: var(--danger-hover-color); border-color: var(--danger-hover-color); }
-.button:active, .button-secondary:active, .button-danger:active { transform: scale(0.98); }
+.button {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+.button:hover {
+  background-color: var(--primary-hover-color);
+  border-color: var(--primary-hover-color);
+}
+.button-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.button-secondary:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+.button-danger {
+  background-color: var(--danger-color);
+  color: #fff;
+  border-color: var(--danger-color);
+}
+.button-danger:hover {
+  background-color: var(--danger-hover-color);
+  border-color: var(--danger-hover-color);
+}
+.button:active,
+.button-secondary:active,
+.button-danger:active {
+  transform: scale(0.98);
+}
 
-/* --- 4. ★★★ NEW STYLES for Home/Welcome Page ★★★ --- */
-.welcome-container { text-align: center; max-width: 700px; }
-.welcome-container h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
-.welcome-container p { font-size: 1.1rem; color: var(--muted-text-color); margin-bottom: 1.5rem; }
-.welcome-container p a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
+/* -----------------------------------------------------------------
+   5. Welcome Page Hero
+------------------------------------------------------------------- */
+.welcome-container {
+  text-align: center;
+  max-width: 700px;
+}
+.welcome-container h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.welcome-container p {
+  font-size: 1.1rem;
+  color: var(--muted-text-color);
+  margin-bottom: 1.5rem;
+}
+.welcome-container p a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+}
 .welcome-container p a:hover { text-decoration: underline; }
 
-/* --- 5. MODIFIED Authentication Pages (Login & Register) --- */
-/* Your existing .auth-container is now used as the main card */
+/* -----------------------------------------------------------------
+   6. Authentication Pages
+------------------------------------------------------------------- */
 .auth-container {
-    width: 100%; max-width: 420px; margin-left: auto; margin-right: auto;
-    background: var(--surface-color); /* MODIFICATION: Added background and shadow */
-    padding: 2.5rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--surface-color);
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
-.auth-container .page-title { text-align: center; font-size: 1.8rem; font-weight: 700; margin-bottom: 2rem; }
-.auth-container form { display: flex; flex-direction: column; width: 100%; }
-.auth-container .form-group { margin-bottom: 1.5rem; }
-.auth-container label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; }
+.auth-container .page-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.auth-container .form-group {
+  margin-bottom: 1.5rem;
+}
+.auth-container label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
 .auth-container input {
-    width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 1rem;
-    font-family: var(--font-family); transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-family: var(--font-family);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.auth-container input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25); }
-.auth-container button { width: 100%; padding: 12px 20px; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; }
-.auth-container .form-footer-text { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; }
-.auth-container .form-footer-text a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
+.auth-container input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
+}
+.auth-container button {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+.auth-container .form-footer-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+.auth-container .form-footer-text a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+}
 .auth-container .form-footer-text a:hover { text-decoration: underline; }
 
-/* ★★★ NEW ★★★ Error message styling for login page */
+/* Error message styling (used globally) */
 .error-message {
-    padding: 1rem; background-color: #F8D7DA; color: #721C24;
-    border: 1px solid #F5C6CB; border-radius: var(--border-radius); margin-bottom: 1.5rem; text-align: center;
+  background: #ffdce0;
+  border: 1px solid #ff6f6f;
+  color: #a33;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 18px;
+  text-align: center;
+  font-weight: 500;
 }
 
-
-/* --- 6. Dashboard Page --- */
+/* -----------------------------------------------------------------
+   7. Dashboard Page (Action Cards)
+------------------------------------------------------------------- */
 .dashboard-header {
-    text-align: center;
-    margin-bottom: 3rem;
+  text-align: center;
+  margin-bottom: 3rem;
 }
-
 .dashboard-header .page-title {
-    font-size: 2.5rem;
-    font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 700;
 }
-
 .dashboard-header .welcome-message {
-    font-size: 1.2rem;
-    color: var(--muted-text-color);
-    margin-top: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--muted-text-color);
+  margin-top: 0.5rem;
 }
 
-/* Action Cards Grid Layout */
 .action-list {
-    display: grid;
-    /* Creates a responsive grid that fits as many columns as possible */
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
 }
-
 .action-card {
-    background-color: var(--surface-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 2rem;
-    display: flex;
-    align-items: flex-start; /* Align icon and text to the top */
-    gap: 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .action-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
-
 .card-icon {
-    flex-shrink: 0;
-    /* A light, appealing background for the icon */
-    background-color: #eaf2fd; 
-    color: var(--primary-color);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  flex-shrink: 0;
+  background-color: #eaf2fd;
+  color: var(--primary-color);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 .card-icon svg {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
-
 .card-content h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0 0 0.5rem 0;
-    color: var(--text-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color);
 }
-
 .card-content p {
-    font-size: 0.95rem;
-    color: var(--muted-text-color);
-    line-height: 1.6;
-    margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted-text-color);
+  line-height: 1.6;
+  margin: 0;
 }
 
-/* --- 7. Quiz & History List Pages --- */
-/* This CSS block styles all list pages, including the public quiz list. */
+/* -----------------------------------------------------------------
+   8. List Pages (Quiz/History List)
+------------------------------------------------------------------- */
 .list-page-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    padding: 1rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 1rem;
 }
-
 .list-page-header .page-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
-
 .list-page-header .page-description {
-    font-size: 1.1rem;
-    color: var(--muted-text-color);
-    margin-bottom: 2rem;
-    max-width: 550px;
-    margin-left: auto;
-    margin-right: auto;
+  font-size: 1.1rem;
+  color: var(--muted-text-color);
+  margin-bottom: 2rem;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
 }
-
 .quiz-list, .history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem; /* Space between list items */
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
-
 .quiz-list-item, .history-list-item {
-    background: var(--surface-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 1.5rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 1.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--surface-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .quiz-list-item:hover, .history-list-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
-
 .quiz-info, .history-info {
-    flex-grow: 1;
-    min-width: 300px; /* Prevent info from getting too squished */
+  flex-grow: 1;
+  min-width: 300px;
 }
-
 .quiz-title, .history-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
 }
-
 .quiz-meta, .history-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem; /* Vertical and horizontal gap */
-    font-size: 0.9rem;
-    color: var(--muted-text-color);
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted-text-color);
+  align-items: center;
 }
-
 .quiz-actions {
-    display: flex;
-    gap: 1rem;
-    flex-shrink: 0; /* Prevent buttons from shrinking */
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
 }
-
-/* Styles for history score (won't apply here but kept for consistency) */
 .history-score {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    flex-shrink: 0;
-    min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  flex-shrink: 0;
+  min-width: 120px;
 }
-.history-score span { font-size: 0.85rem; color: var(--muted-text-color); margin-bottom: 0.25rem; }
-.history-score p { font-size: 1.6rem; font-weight: 700; color: var(--primary-color); margin: 0; line-height: 1; }
-
-/* --- 8. Generic Form Pages (Quiz Creation, etc.) --- */
-.form-container { 
-    background: var(--surface-color); 
-    padding: 2.5rem 3rem; /* Add more horizontal padding */
-    border-radius: var(--border-radius); 
-    box-shadow: var(--box-shadow); 
+.history-score span {
+  font-size: 0.85rem;
+  color: var(--muted-text-color);
+  margin-bottom: 0.25rem;
 }
-
-.form-container .page-title { 
-    text-align: center; 
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem; /* Adjust margin */
+.history-score p {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0;
+  line-height: 1;
 }
 
-.form-container .form-description { 
-    text-align: center; 
-    color: var(--muted-text-color); 
-    margin-bottom: 2.5rem; /* Add more space before the form starts */
-    max-width: 550px;
-    margin-left: auto;
-    margin-right: auto;
+/* -----------------------------------------------------------------
+   9. Generic Form Pages (Quiz Creation, etc.)
+------------------------------------------------------------------- */
+.form-container {
+  background: var(--surface-color);
+  padding: 2.5rem 3rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
-
-.form-container form { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 1.75rem; /* Add more space between form groups */
+.form-container .page-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
-
-.form-container .form-group { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 0.5rem; /* Space between label and input */
+.form-container .form-description {
+  text-align: center;
+  color: var(--muted-text-color);
+  margin-bottom: 2.5rem;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-.form-container label { 
-    font-weight: 600; 
-    font-size: 0.95rem; 
-    color: var(--text-color);
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
-
+.form-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.form-container label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
 .form-container input[type="text"],
 .form-container input[type="number"],
 .form-container select,
 .form-container textarea {
-    width: 100%; 
-    padding: 12px 16px; 
-    border: 1px solid var(--border-color); 
-    border-radius: var(--border-radius); 
-    font-size: 1rem;
-    font-family: var(--font-family);
-    background-color: #fff;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-family: var(--font-family);
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-
-/* Custom arrow for select dropdowns for a consistent look */
 .form-container select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1em;
-    padding-right: 2.5rem; /* Make space for the arrow */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
 }
-
-.form-container input:focus, 
-.form-container select:focus, 
-.form-container textarea:focus { 
-    outline: none; 
-    border-color: var(--primary-color); 
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25); 
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
 }
-
-.form-container textarea { 
-    resize: vertical; 
-    min-height: 120px; 
+.form-container textarea {
+  resize: vertical;
+  min-height: 120px;
 }
-
-/* Helper text styling for notes below inputs */
 .form-container .form-text {
-    font-size: 0.85rem;
-    color: var(--muted-text-color);
-    margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--muted-text-color);
+  margin-top: 0.25rem;
 }
-
-/* Main action button styling */
 .form-container button[type="submit"].button {
-    width: 100%;
-    margin-top: 1rem; /* Add space above the button */
-    padding: 14px 24px;
-    font-size: 1.1rem;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 14px 24px;
+  font-size: 1.1rem;
 }
-
-/* --- Styles for other form types (kept for compatibility) --- */
 .form-actions { display: flex; gap: 1rem; justify-content: flex-end; }
 .form-actions-split { display: flex; justify-content: space-between; align-items: center; }
 .form-divider { border: none; border-top: 1px solid var(--border-color); margin: 1rem 0; }
 .question-editor-list { display: flex; flex-direction: column; gap: 2rem; }
-.question-editor-card { background: #fdfdff; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); }
 .question-editor-title { font-size: 1rem; font-weight: 600; color: var(--primary-color); }
 
-/* --- 9. Solve Quiz Page (UI Enhancement) --- */
-/* .solve-quiz-container or .form-container can be used for the quiz page */
+/* -----------------------------------------------------------------
+   10. Solve Quiz Page (UI Enhancement)
+------------------------------------------------------------------- */
 .solve-quiz-container .page-title,
-.form-container .page-title { 
-    text-align: center; 
-    font-size: 2rem; 
-    margin-bottom: 2rem; 
+.form-container .page-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
-
-.question-list { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 2.5rem; /* Questions are more separated */
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
-
-.question-card { 
-    background: var(--surface-color); 
-    border-radius: var(--border-radius); 
-    padding: 2rem; 
-    box-shadow: var(--box-shadow); 
+.question-card {
+  background: var(--surface-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--box-shadow);
 }
-
-.question-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: baseline; 
-    border-bottom: 1px solid var(--border-color); 
-    padding-bottom: 0.75rem; 
-    margin-bottom: 1.5rem; 
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
 }
-
-.question-header h4 { 
-    font-size: 1.2rem; 
-    color: var(--text-color);
+.question-header h4 { font-size: 1.2rem; color: var(--text-color); }
+.question-header span { font-size: 1rem; font-weight: 600; color: var(--primary-color); }
+.question-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
 }
-
-.question-header span {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-.question-text { 
-    font-size: 1.1rem; 
-    line-height: 1.7;
-    margin-bottom: 2rem; 
-}
-
-/* --- ★★★ Multiple Choice Option Styling (Key Improvement) ★★★ --- */
+/* Multiple Choice Option Styling */
 .options-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem; /* Reduced gap for a tighter list */
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
-
 .option-label {
-    display: block; /* Changed to block for full width */
-    position: relative; /* For custom radio button positioning */
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-
-/* Hide the default radio button */
 .option-label input[type="radio"] {
-    opacity: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
 }
-
-/* Style for the visible part of the label */
 .option-label span {
-    display: block;
-    padding: 1rem 1.5rem;
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--surface-color);
-    transition: all 0.2s ease-in-out;
+  display: block;
+  padding: 1rem 1.5rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--surface-color);
+  transition: all 0.2s;
 }
-
-/* Hover effect */
 .option-label:hover span {
-    border-color: var(--primary-hover-color);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  border-color: var(--primary-hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
 }
-
-/* Style for the selected option */
 .option-label input[type="radio"]:checked + span {
-    background-color: #eaf2fd; /* Light blue background */
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-    font-weight: 600;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
+  background-color: #eaf2fd;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 600;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
 }
 
-
-/* --- Styling for other answer types --- */
+/* Short/Descriptive Answer Styling */
 .answer-input-group input[type="text"],
 .answer-input-group textarea {
-    width: 100%; 
-    padding: 12px 16px; 
-    border: 1px solid var(--border-color); 
-    border-radius: var(--border-radius); 
-    font-size: 1rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-
 .answer-input-group input[type="text"]:focus,
 .answer-input-group textarea:focus {
-    outline: none; 
-    border-color: var(--primary-color); 
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
 }
-
 .answer-input-group textarea {
-    resize: vertical;
-    min-height: 120px;
+  resize: vertical;
+  min-height: 120px;
 }
-/* --- 10. UNTOUCHED Solve Quiz Page (FROM YOUR Ver 4.0) --- */
-.solve-quiz-container .page-title { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
-.question-list { display: flex; flex-direction: column; gap: 2rem; }
-.question-card { background: var(--surface-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--box-shadow); }
-.question-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.5rem; }
-.question-header h4 { font-size: 1.2rem; }
-.question-text { font-size: 1.1rem; margin-bottom: 2rem; }
-.options-group { display: flex; flex-direction: column; gap: 1rem; }
-.option-label { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); cursor: pointer; transition: background-color 0.2s, border-color 0.2s; }
-.option-label:hover { background-color: #f8f9fa; }
-.option-label input[type="radio"] { accent-color: var(--primary-color); }
-.option-label.selected { border-color: var(--primary-color); background-color: #eaf2fd; }
 
-/* --- 11. UNTOUCHED Quiz Result Page (FROM YOUR Ver 4.0) --- */
-.result-header { text-align: center; padding: 2rem; background-color: var(--surface-color); border-radius: var(--border-radius); margin-bottom: 2rem; box-shadow: var(--box-shadow); }
-.final-score { font-size: 2.5rem; font-weight: 700; color: var(--primary-color); }
+/* -----------------------------------------------------------------
+   11. Quiz Result Page
+------------------------------------------------------------------- */
+.result-header {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+  box-shadow: var(--box-shadow);
+}
+.final-score {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
 .result-message { font-size: 1.1rem; color: var(--muted-text-color); }
-.result-list { display: flex; flex-direction: column; gap: 1.5rem; }
-.result-card { background: var(--surface-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--box-shadow); border-left: 5px solid; }
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.result-card {
+  background: var(--surface-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+  border-left: 5px solid;
+}
 .result-card.correct { border-left-color: var(--correct-color); }
 .result-card.incorrect { border-left-color: var(--danger-color); }
-.result-card .question-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.result-card .question-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 .question-number { font-size: 1.1rem; font-weight: 700; }
-.result-indicator { padding: 0.25rem 0.75rem; border-radius: 999px; font-weight: 600; color: #fff; }
+.result-indicator {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #fff;
+}
 .result-card.correct .result-indicator { background-color: var(--correct-color); }
 .result-card.incorrect .result-indicator { background-color: var(--danger-color); }
-.user-answer { background-color: #F8F9FA; padding: 1rem; border-radius: var(--border-radius); }
+.user-answer {
+  background-color: #F8F9FA;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+}
 .result-actions-final { margin-top: 3rem; text-align: center; }
 
-/* --- 12. UNTOUCHED Utilities (FROM YOUR Ver 4.0) --- */
-.no-content-message { text-align: center; padding: 3rem; background-color: var(--surface-color); border: 1px dashed var(--border-color); border-radius: var(--border-radius); }
+/* -----------------------------------------------------------------
+   12. Utilities (Empty State)
+------------------------------------------------------------------- */
+.no-content-message {
+  text-align: center;
+  padding: 3rem;
+  background-color: var(--surface-color);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--border-radius);
+}
 .no-content-message p { margin-bottom: 1.5rem; color: var(--muted-text-color); }
 
-/* --- 13. UNTOUCHED Responsive Design (FROM YOUR Ver 4.0) --- */
-@media (max-width: 768px) {
-    body { font-size: 15px; }
-    main { padding: 1rem; }
-    header { padding: 0.75rem 1rem; }
-    /* MODIFIED: auth-container padding for mobile */
-    .auth-container, .form-container { padding: 1.5rem; }
-    .quiz-list-item, .history-list-item { flex-direction: column; align-items: flex-start; }
-    .quiz-actions, .history-score { width: 100%; margin-top: 1rem; }
-    .form-actions-split { flex-direction: column; gap: 1rem; align-items: stretch; }
-    .form-actions-split .button-danger { order: 2; }
-    .form-actions-split .main-actions { order: 1; width: 100%; }
-}
-
-/* --- 14. ★★★ NEW: Custom File Input for Image Upload Page ★★★ --- */
+/* -----------------------------------------------------------------
+   13. Custom File Input for Image Upload
+------------------------------------------------------------------- */
 .form-group .file-input-wrapper {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 .form-group input[type="file"] {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 .form-group .file-input-label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    width: 100%;
-    padding: 2.5rem 2rem;
-    border: 2px dashed var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--background-color);
-    cursor: pointer;
-    text-align: center;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 .form-group .file-input-label:hover {
-    border-color: var(--primary-color);
-    background-color: #eaf2fd;
+  border-color: var(--primary-color);
+  background-color: #eaf2fd;
 }
 .file-input-label .icon {
-    width: 48px;
-    height: 48px;
-    color: var(--primary-color);
-    stroke-width: 1.5px;
+  width: 48px;
+  height: 48px;
+  color: var(--primary-color);
+  stroke-width: 1.5px;
 }
 .file-input-label .text {
-    font-weight: 600;
-    color: var(--text-color);
-    font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 1.1rem;
 }
 .file-input-label .subtext {
-    font-size: 0.9rem;
-    color: var(--muted-text-color);
+  font-size: 0.9rem;
+  color: var(--muted-text-color);
 }
 .file-name-display {
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 0.95rem;
-    color: var(--muted-text-color);
-    font-weight: 500;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--muted-text-color);
+  font-weight: 500;
 }
 
-/* ============================================= */
-/* --- 15. ★★★ NEW: Header Logo Styles ★★★ --- */
-/* ============================================= */
+/* -----------------------------------------------------------------
+   14. Header Logo & Hamburger Menu (Responsive)
+------------------------------------------------------------------- */
 .site-logo {
-    margin: 0;
-    padding: 0;
-    font-size: 1.5rem; /* h1のデフォルトサイズをリセット */
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
 }
-
 .site-logo a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    color: var(--header-text-color); /* style.cssの変数を利用 */
-    text-decoration: none;
-    transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: var(--header-text-color);
+  text-decoration: none;
+  transition: opacity 0.2s;
 }
+.site-logo a:hover { opacity: 0.8; }
+.site-logo svg { stroke: var(--primary-color); }
 
-.site-logo a:hover {
-    opacity: 0.8;
-}
-
-.site-logo svg {
-    /* サイズはheader.ejsで直接指定しているので、ここでは不要 */
-    stroke: var(--primary-color); /* アイコンの色をプライマリカラーに */
-}
-
-/* ========================================================= */
-/* --- 16. ★★★ UPDATED: Responsive Header Styles ★★★ --- */
-/* ========================================================= */
-
-/* --- ハンバーガーメニューボタンの基本スタイル --- */
 .hamburger-menu {
-    display: none;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    z-index: 1001;
-    /* ★ アイコンを重ねるための設定を追加 */
-    position: relative;
-    width: 28px;
-    height: 28px;
+  display: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1001;
+  position: relative;
+  width: 28px;
+  height: 28px;
 }
 .hamburger-menu svg {
-    width: 100%;
-    height: 100%;
-    color: var(--header-text-color);
-    /* ★ アイコンのトランジション（アニメーション）設定を追加 */
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+  color: var(--header-text-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.3s, transform 0.3s;
 }
-/* 最初は閉じるアイコンを隠す（transformで回転させておく） */
 .hamburger-menu .icon-close {
-    opacity: 0;
-    transform: rotate(-90deg);
+  opacity: 0;
+  transform: rotate(-90deg);
 }
 
-/* --- 画面幅が768px以下の場合のスタイル --- */
+/* Responsive Navigation Menu for Mobile */
 @media (max-width: 768px) {
-    /* (1) PC用のナビゲーションを隠す → アニメーションのために display から opacity に変更 */
-    .header-container .main-nav {
-        /* display: none; を削除 */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(8px);
-        z-index: 1000;
-        
-        /* ★ ここからアニメーション用のスタイル ★ */
-        opacity: 0; /* 透明にする */
-        visibility: hidden; /* 見えなくする（クリックもできなくする） */
-        transform: translateY(-10px); /* 少し上にずらす */
-        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-    }
-    .header-container .main-nav a {
-        font-size: 1.5rem;
-        color: var(--text-color);
-    }
-    .header-container .main-nav span a {
-        font-weight: bold;
-        color: var(--primary-color);
-    }
-
-    /* (2) ハンバーガーボタンを表示する */
-    .hamburger-menu {
-        display: block;
-    }
-
-    /* (3) メニューが開いたときのスタイル */
-    header.mobile-menu-open .main-nav {
-        /* ★ アニメーション後の状態を指定 ★ */
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-
-    /* (4) メニューが開いたときのアイコン切り替え */
-    header.mobile-menu-open .hamburger-menu .icon-hamburger {
-        opacity: 0;
-        transform: rotate(90deg);
-    }
-    header.mobile-menu-open .hamburger-menu .icon-close {
-        opacity: 1;
-        transform: rotate(0deg);
-        color: var(--text-color);
-    }
-}
-
-/* =================================================== */
-/* --- 17. ★★★ NEW: Quiz Result Page Styles ★★★ --- */
-/* =================================================== */
-.result-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
-}
-.result-summary {
-    text-align: center;
-    padding: 2rem;
-    background-color: var(--background-color);
-    border-radius: var(--border-radius);
-    margin-bottom: 2rem;
-}
-.quiz-title-result {
-    font-size: 1.5rem;
-    color: var(--text-color);
-    margin: 0.5rem 0 1.5rem;
-}
-.score-display {
-    margin-bottom: 1rem;
-}
-.score-value {
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-.score-divider, .score-max {
-    font-size: 1.5rem;
-    color: var(--muted-text-color);
-}
-.score-label {
-    font-size: 1.2rem;
-    color: var(--text-color);
-    margin-left: 0.5rem;
-}
-.result-message {
-    font-size: 1.1rem;
-    color: var(--text-color);
-}
-
-.results-list {
+  .header-container .main-nav {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+  }
+  .header-container .main-nav a {
+    font-size: 1.5rem;
+    color: var(--text-color);
+  }
+  .header-container .main-nav span a {
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+  .hamburger-menu { display: block; }
+  header.mobile-menu-open .main-nav {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  header.mobile-menu-open .hamburger-menu .icon-hamburger {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+  header.mobile-menu-open .hamburger-menu .icon-close {
+    opacity: 1;
+    transform: rotate(0deg);
+    color: var(--text-color);
+  }
+}
+
+/* -----------------------------------------------------------------
+   15. Quiz Result Page (Detailed Section)
+------------------------------------------------------------------- */
+.result-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+.result-summary {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+}
+.quiz-title-result {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin: 0.5rem 0 1.5rem;
+}
+.score-display { margin-bottom: 1rem; }
+.score-value {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+.score-divider, .score-max {
+  font-size: 1.5rem;
+  color: var(--muted-text-color);
+}
+.score-label {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-left: 0.5rem;
+}
+.result-message { font-size: 1.1rem; color: var(--text-color); }
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 .result-item {
-    background-color: var(--background-color);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    overflow: hidden;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
 }
 .result-item-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.8rem 1.2rem;
-    border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-bottom: 1px solid var(--border-color);
 }
 .result-item.correct .result-item-header { background-color: #e6f4ea; }
 .result-item.incorrect .result-item-header { background-color: #fce8e6; }
-
 .question-number { font-weight: 600; }
 .question-points { font-size: 0.9rem; color: var(--muted-text-color); }
 .result-mark {
-    margin-left: auto;
-    font-weight: 700;
-    padding: 0.2rem 0.6rem;
-    border-radius: 99px;
-    font-size: 0.9rem;
+  margin-left: auto;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  font-size: 0.9rem;
 }
 .result-item.correct .result-mark { color: #1e8e3e; background-color: #c6f0d4; }
 .result-item.incorrect .result-mark { color: #c5221f; background-color: #fdd8d6; }
-
 .question-text-result {
-    padding: 1.2rem;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin: 0;
+  padding: 1.2rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
 }
-
 .answer-group {
-    padding: 0 1.2rem 1.2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  padding: 0 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 .answer-box {
-    padding: 1rem;
-    border-radius: var(--border-radius-small);
+  padding: 1rem;
+  border-radius: var(--border-radius);
 }
 .answer-box.your-answer { background-color: #f8f9fa; }
 .answer-box.correct-answer { background-color: #e6f4ea; border: 1px solid #b7e1c6; }
 .answer-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--muted-text-color);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted-text-color);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
 }
-.answer-text {
-    margin: 0;
-    color: var(--text-color);
-}
-
+.answer-text { margin: 0; color: var(--text-color); }
 .feedback-box {
-    padding: 1.2rem;
-    background-color: #f1f3f5;
-    border-top: 1px solid var(--border-color);
+  padding: 1.2rem;
+  background-color: #f1f3f5;
+  border-top: 1px solid var(--border-color);
 }
 .feedback-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--muted-text-color);
-    margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted-text-color);
+  margin-bottom: 0.5rem;
 }
-.feedback-text {
-    margin: 0;
+.feedback-text { margin: 0; }
+.result-actions {
+  margin-top: 2rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+/* Image Preview */
+.image-preview-wrapper {
+  width: 100%;
+  max-width: 350px;
+  margin: 1.2em auto 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.image-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 250px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px #0002;
+  object-fit: contain;
+  background: #f6f7f9;
+  margin: 0 auto;
 }
 
-.result-actions {
-    margin-top: 2rem;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
+/* -----------------------------------------------------------------
+   16. Manual Quiz Creation Page (manual-create.ejs)
+------------------------------------------------------------------- */
+/* ---- Wrapper for all questions ---- */
+#questionsArea { margin-bottom: 2rem; }
+/* ---- Individual question card ---- */
+.question-editor-card {
+  background: #f6f9fc;
+  border: 1px solid #e2e5e8;
+  border-radius: 8px;
+  padding: 18px 12px 12px 12px;
+  margin-bottom: 18px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(80,130,230,0.06);
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+.question-editor-card label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 7px;
+  color: #2d3245;
+}
+.question-editor-card input[type="text"],
+.question-editor-card input[type="number"],
+.question-editor-card select {
+  display: inline-block;
+  width: auto;
+  min-width: 160px;
+  margin-bottom: 7px;
+  margin-right: 10px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  font-size: 1rem;
+}
+.question-editor-card input[type="number"] { max-width: 72px; }
+
+/* ---- Option editing area ---- */
+.options-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+.options-area-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+.options-area input[type="text"] {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 320px;
+  margin-right: 4px;
+  margin-bottom: 6px;
+}
+
+/* ---- Manual quiz page buttons ---- */
+.mc-btn {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  margin-left: 7px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px #0001;
+  outline: none;
+  vertical-align: middle;
+  line-height: 1.1;
+}
+/* Option Remove */
+.remove-option-btn, .mc-btn-remove {
+  background: #ffeaea;
+  color: #c72020;
+}
+.remove-option-btn:hover, .mc-btn-remove:hover {
+  background: #ffcccc;
+  color: #8a1010;
+}
+/* Option Add */
+.add-option-btn, .mc-btn-add {
+  background: #e7f4ff;
+  color: #2176bd;
+}
+.add-option-btn:hover, .mc-btn-add:hover {
+  background: #cfe7fc;
+  color: #164c70;
+}
+/* Question Delete */
+.delete-question-btn, .mc-btn-delete {
+  background: #ffdce0;
+  color: #a33;
+  padding: 7px 18px;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 10px;
+  margin-bottom: 0;
+  margin-left: 0;
+  display: block;
+  width: fit-content;
+}
+.delete-question-btn:hover, .mc-btn-delete:hover {
+  background: #ffc6c6;
+  color: #7d2020;
+}
+
+/* ---- Add question button ---- */
+#addQuestionBtn {
+  display: inline-block;
+  margin-bottom: 2rem;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1.08rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#addQuestionBtn:hover {
+  background: var(--primary-hover-color);
+}
+/* ---- Submit button ---- */
+#manualQuizForm button[type="submit"] {
+  width: 100%;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 0;
+  font-size: 1.13rem;
+  font-weight: 700;
+  margin-top: 1.3rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#manualQuizForm button[type="submit"]:hover {
+  background: var(--primary-hover-color);
+}
+
+/* -----------------------------------------------------------------
+   17. Responsive Design
+------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  body { font-size: 15px; }
+  main { padding: 1rem; }
+  header { padding: 0.75rem 1rem; }
+  .auth-container, .form-container { padding: 1.5rem; }
+  .quiz-list-item, .history-list-item { flex-direction: column; align-items: flex-start; }
+  .quiz-actions, .history-score { width: 100%; margin-top: 1rem; }
+  .form-actions-split { flex-direction: column; gap: 1rem; align-items: stretch; }
+  .form-actions-split .button-danger { order: 2; }
+  .form-actions-split .main-actions { order: 1; width: 100%; }
+}
+@media (max-width: 600px) {
+  .form-container { padding: 1.2rem !important; }
+  .question-editor-card { padding: 10px 4px 8px 4px; }
+  .options-area input[type="text"] { max-width: 100%; }
+  .mc-btn,
+  .remove-option-btn,
+  .add-option-btn,
+  .delete-question-btn {
+    padding: 6px 10px;
+    font-size: 0.97rem;
+  }
+  .image-preview-wrapper { max-width: 98vw; }
+  .image-preview { max-width: 100vw; max-height: 32vw; }
 }

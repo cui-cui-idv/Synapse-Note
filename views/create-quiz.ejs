@@ -4,7 +4,9 @@
     <div class="form-container">
         <h2 class="page-title">新しい問題を作成する</h2>
         <p class="form-description">以下の項目を入力して、AIにオリジナルの問題を作成させましょう。</p>
-        
+        <% if (locals.error) { %>
+            <div class="error-message"><%= error %></div>
+        <% } %>
         <form action="/quiz/create" method="POST">
             <div class="form-group">
                 <label for="title">テストのタイトル（任意）</label>

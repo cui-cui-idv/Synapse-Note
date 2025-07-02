@@ -11,9 +11,9 @@
             <span class="score-label">点</span>
         </div>
         <p class="result-message">
-            <% if (totalScore / maxScore >= 0.8) { %>
+            <% if (maxScore > 0 && totalScore / maxScore >= 0.8) { %>
                 素晴らしい成績です！よく頑張りました！
-            <% } else if (totalScore / maxScore >= 0.5) { %>
+            <% } else if (maxScore > 0 && totalScore / maxScore >= 0.5) { %>
                 お疲れ様でした。よくできています！
             <% } else { %>
                 お疲れ様でした。間違えた問題を復習しましょう。
@@ -29,7 +29,7 @@
                     <span class="question-points">(<%= result.points %>点)</span>
                     <span class="result-mark"><%= result.is_correct ? '正解' : '不正解' %></span>
                 </div>
-                <p class="question-text-result"><%= result.question %></p>
+                <p class="question-text-result"><%- result.question.replace(/\n/g, '<br>') %></p>
                 
                 <div class="answer-group">
                     <div class="answer-box your-answer">
@@ -37,36 +37,47 @@
                         <p class="answer-text"><%= result.user_answer || '(無回答)' %></p>
                     </div>
                     
-                    <!-- ★★★ ここからが追加部分 ★★★ -->
                     <% if (!result.is_correct) { %>
                         <div class="answer-box correct-answer">
                             <div class="answer-label">正解</div>
                             <p class="answer-text"><%= result.correct_answer %></p>
                         </div>
                     <% } %>
-                    <!-- ★★★ ここまでが追加部分 ★★★ -->
                 </div>
 
                 <div class="feedback-box">
                     <div class="feedback-label">フィードバック (獲得点数: <%= result.score %>点)</div>
-                    <p class="feedback-text"><%= result.feedback %></p>
+                    <p class="feedback-text"><%- result.feedback.replace(/\n/g, '<br>') %></p>
                 </div>
             </div>
         <% }); %>
     </div>
 
+    <!-- ★★★ ここからが修正箇所 ★★★ -->
     <div class="result-actions">
         <% if (isDraft) { %>
-            <form action="/quiz/save-draft" method="POST" style="display: inline;">
+            <!-- 下書きを保存するためのフォーム -->
+            <form action="/quiz/save-draft" method="POST" style="display: inline-block; margin-right: 10px;">
                 <input type="hidden" name="quizData" value='<%- JSON.stringify(quiz) %>'>
-                <button type="submit" class="button">この問題を保存する</button>
+                <button type="submit" class="button">
+                    <i class="fas fa-save"></i> この問題を保存する
+                </button>
             </form>
-            <a href="/quiz/create" class="button secondary">新しい問題を作る</a>
+            <!-- 新しい問題を作るための正しいリンク -->
+            <a href="/quiz/create" class="button secondary">
+                <i class="fas fa-plus"></i> 新しい問題を作る
+            </a>
         <% } else { %>
-            <a href="/quiz/my-quizzes" class="button">作成一覧に戻る</a>
-            <a href="/public-quizzes" class="button secondary">他の問題を探す</a>
+            <!-- 保存済みクイズの解答後のアクション -->
+            <a href="/quiz/my-quizzes" class="button">
+                <i class="fas fa-list-ul"></i> 作成一覧に戻る
+            </a>
+            <a href="/dashboard" class="button secondary">
+                <i class="fas fa-home"></i> ダッシュボードに戻る
+            </a>
         <% } %>
     </div>
+    <!-- ★★★ ここまでが修正箇所 ★★★ -->
 </div>
 
 <%- include('partials/footer') %>

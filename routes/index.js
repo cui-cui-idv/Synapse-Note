@@ -25,17 +25,25 @@ router.get('/dashboard', requireLogin, (req, res) => {
 
 router.get('/my-history', requireLogin, async (req, res) => {
     try {
-        // ★★★ ここを修正: req.session.user.id を req.session.user.uid に変更 ★★★
         const attemptsSnapshot = await db.collection('quiz_attempts')
             .where('userId', '==', req.session.user.uid)
             .orderBy('attemptedAt', 'desc')
             .get();
             
-        const attempts = attemptsSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-            attemptedAt: doc.data().attemptedAt.toDate()
-        }));
+        const attempts = attemptsSnapshot.docs.map(doc => {
+            const data = doc.data();
+            // attemptedAt フィールドが存在し、かつ null でないことを確認
+            const attemptedAtDate = data.attemptedAt && typeof data.attemptedAt.toDate === 'function' 
+                ? data.attemptedAt.toDate() 
+                : new Date(); // 存在しない場合は現在時刻を仮で入れる
+
+            return {
+                id: doc.id,
+                ...data,
+                attemptedAt: attemptedAtDate
+            };
+        });
+
         res.render('my-history', { user: req.session.user, attempts: attempts });
     } catch (error) {
         console.error("History Error:", error);

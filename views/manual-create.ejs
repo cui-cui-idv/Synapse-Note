@@ -1,0 +1,122 @@
+<%- include('partials/header') %>
+<main>
+  <div class="form-container">
+    <h2 class="page-title">手動で問題を作成</h2>
+    <% if (error) { %>
+      <div class="error-message"><%= error %></div>
+    <% } %>
+    <form id="manualQuizForm" method="POST" action="/quiz/manual-create" autocomplete="off">
+      <div class="form-group">
+        <label for="quiz-title">タイトル</label>
+        <input type="text" id="quiz-title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="quiz-subject">科目</label>
+        <input type="text" id="quiz-subject" name="subject" required>
+      </div>
+      <div class="form-group">
+        <label for="quiz-difficulty">難易度</label>
+        <input type="text" id="quiz-difficulty" name="difficulty" required>
+      </div>
+      <hr>
+      <div id="questionsArea"></div>
+      <button type="button" id="addQuestionBtn" class="button-secondary mc-btn mc-btn-add" style="margin-bottom:1.2rem;">＋ 問題を追加</button>
+      <input type="hidden" name="questions" id="questionsInput">
+      <button type="submit" class="button">クイズを保存</button>
+    </form>
+  </div>
+</main>
+<%- include('partials/footer') %>
+<script>
+/* ===== manual-quiz.js のインラインバージョン ===== */
+let questions = [];
+
+function renderQuestions() {
+  const area = document.getElementById('questionsArea');
+  area.innerHTML = '';
+  questions.forEach((q, i) => {
+    area.innerHTML += `
+      <div class="question-editor-card" style="margin-bottom:18px;">
+        <div style="display:flex; flex-wrap:wrap; gap:12px 16px;">
+          <label>問題文
+            <input type="text" value="${escapeHtml(q.question || '')}" onchange="updateQuestion(${i}, 'question', this.value)">
+          </label>
+          <label>タイプ
+            <select onchange="updateQuestion(${i}, 'type', this.value)">
+              <option value="multiple_choice" ${q.type==='multiple_choice'?'selected':''}>選択式</option>
+              <option value="short_answer" ${q.type==='short_answer'?'selected':''}>短答式</option>
+              <option value="descriptive" ${q.type==='descriptive'?'selected':''}>記述式</option>
+            </select>
+          </label>
+          <label>配点
+            <input type="number" min="1" value="${Number(q.points)||10}" onchange="updateQuestion(${i}, 'points', this.value)">
+          </label>
+        </div>
+        ${(q.type === 'multiple_choice') ? renderOptions(i, q) : ''}
+        <label>正解
+          <input type="text" value="${escapeHtml(q.answer||'')}" onchange="updateQuestion(${i}, 'answer', this.value)">
+        </label>
+        <button type="button" class="mc-btn delete-question-btn" onclick="removeQuestion(${i})">この問題を削除</button>
+      </div>
+    `;
+  });
+  document.getElementById('questionsInput').value = JSON.stringify(questions);
+}
+
+function renderOptions(idx, q) {
+  // 選択肢編集部分を縦並び＆削除ボタン付きで生成
+  let rows = '';
+  (q.options||["",""]).forEach((opt,j)=> {
+    rows += `
+      <div class="options-area-row">
+        <input type="text" value="${escapeHtml(opt)}" onchange="updateOption(${idx},${j},this.value)">
+        <button type="button" class="mc-btn remove-option-btn" onclick="removeOption(${idx},${j})">× 削除</button>
+      </div>
+    `;
+  });
+  return `
+    <div class="options-area">
+      ${rows}
+      <button type="button" class="mc-btn add-option-btn" onclick="addOption(${idx})">＋ 選択肢追加</button>
+    </div>
+  `;
+}
+function addQuestion() {
+  questions.push({question:"",type:"multiple_choice",options:["",""],answer:"",points:10});
+  renderQuestions();
+}
+function removeQuestion(idx) {
+  questions.splice(idx,1);
+  renderQuestions();
+}
+function updateQuestion(idx, key, val) {
+  if(key==="points") val = Number(val)||10;
+  questions[idx][key]=val;
+  if(key==="type" && val==="multiple_choice" && !questions[idx].options) questions[idx].options=["",""];
+  if(key==="type" && val!=="multiple_choice") delete questions[idx].options;
+  renderQuestions();
+}
+function addOption(qIdx) {
+  if(!questions[qIdx].options) questions[qIdx].options=[];
+  questions[qIdx].options.push("");
+  renderQuestions();
+}
+function removeOption(qIdx, oIdx) {
+  questions[qIdx].options.splice(oIdx,1);
+  renderQuestions();
+}
+function updateOption(qIdx, oIdx, val) {
+  questions[qIdx].options[oIdx]=val;
+  renderQuestions();
+}
+// エスケープ（XSS対策・ダブルエスケープ防止）
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+document.getElementById('addQuestionBtn').onclick = addQuestion;
+renderQuestions();
+</script>
