@@ -7,8 +7,8 @@
     </div>
 
     <div class="action-list">
-        <!-- クイズ作成カード -->
-        <a href="/create-quiz" class="action-card">
+        <!-- クイズ作成カード (テキスト) -->
+        <a href="/quiz/create" class="action-card">
             <div class="card-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
             </div>
@@ -17,9 +17,20 @@
                 <p>科目や難易度を指定して、AIにオリジナルの問題を作成させます。</p>
             </div>
         </a>
+        
+        <!-- ★★★ NEW: 画像からクイズ作成カード ★★★ -->
+        <a href="/quiz/create-from-image" class="action-card">
+            <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+            </div>
+            <div class="card-content">
+                <h3>画像から問題を作成する</h3>
+                <p>教科書やノートの写真をアップロードして、問題を自動生成します。</p>
+            </div>
+        </a>
 
         <!-- 作成した問題一覧カード -->
-        <a href="/my-quizzes" class="action-card">
+        <a href="/quiz/my-quizzes" class="action-card">
             <div class="card-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
             </div>

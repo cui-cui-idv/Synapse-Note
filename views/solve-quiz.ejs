@@ -1,18 +1,18 @@
 <%- include('partials/header') %>
 
 <div class="form-container">
-    <form action="/submit-quiz" method="POST">
+    <form action="/quiz/submit" method="POST">
         <h2 class="page-title"><%= quiz.title %></h2>
         
         <!-- 
             このフォームは2つのケースで使われます:
-            1. 保存済みクイズの場合: quizIdを持つ
-            2. AI生成直後の下書きクイズの場合: quizIdを持たず、全問題データを持つ
+            1. isDraft=false (保存済みクイズ): quizIdを持つ
+            2. isDraft=true (AI生成直後の下書き): quizIdを持たず、全問題データを持つ
         -->
-        <% if (quiz.id) { %>
+        <% if (!isDraft && quiz.id) { %>
             <input type="hidden" name="quizId" value="<%= quiz.id %>">
         <% } else { %>
-            <input type="hidden" name="draftQuiz" value="<%= JSON.stringify(quiz) %>">
+            <input type="hidden" name="draftQuizData" value='<%- JSON.stringify(quiz) %>'>
         <% } %>
 
         <div class="question-list">
@@ -22,7 +22,7 @@
                         <h4>問題 <%= index + 1 %></h4>
                         <span>(<%= q.points %>点)</span>
                     </div>
-                    <p class="question-text"><%= q.question %></p>
+                    <p class="question-text"><%- q.question.replace(/\n/g, '<br>') %></p>
                     
                     <div class="answer-input-group">
                         <% if (q.type === 'multiple_choice') { %>

@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+
+<main>
+    <div class="form-container">
+        <h2 class="page-title">画像から問題を作成</h2>
+        <p class="form-description">教科書やノートの写真をアップロードして、問題を自動生成します。</p>
+
+        <% if (locals.error) { %>
+            <div class="error-message"><%= error %></div>
+        <% } %>
+
+        <form action="/quiz/generate-from-image" method="POST" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="textbookImage">画像ファイル:</label>
+                
+                <!-- ★★★ この部分がCSS適用のための重要な構造です ★★★ -->
+                <div class="file-input-wrapper">
+                    <label for="textbookImage" class="file-input-label">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
+                        <span class="text">ファイルを選択</span>
+                        <span class="subtext">または、ここにドラッグ＆ドロップ</span>
+                    </label>
+                    <input type="file" id="textbookImage" name="textbookImage" accept="image/*" required>
+                </div>
+                <div id="fileNameDisplay" class="file-name-display"></div>
+                <!-- ★★★ ここまで ★★★ -->
+
+            </div>
+
+            <div class="form-group">
+                <label for="subject">科目:</label>
+                <input type="text" id="subject" name="subject" required placeholder="例: 中学英語">
+            </div>
+            <div class="form-group">
+                <label for="difficulty">対象学年（目安）:</label>
+                <input type="text" id="difficulty" name="difficulty" required placeholder="例: 中学2年生">
+            </div>
+            <div class="form-group">
+                <label for="num_questions">問題数:</label>
+                <input type="number" id="num_questions" name="num_questions" min="1" max="20" value="5" required>
+            </div>
+
+            <button type="submit" class="button">問題を生成して挑戦する</button>
+        </form>
+    </div>
+</main>
+
+<%- include('partials/footer') %>
+
+<script>
+  // ファイルが選択されたら、ファイル名を表示する
+  const fileInput = document.getElementById('textbookImage');
+  const fileNameDisplay = document.getElementById('fileNameDisplay');
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files.length > 0) {
+      fileNameDisplay.textContent = `選択中のファイル: ${this.files[0].name}`;
+    } else {
+      fileNameDisplay.textContent = '';
+    }
+  });
+</script>

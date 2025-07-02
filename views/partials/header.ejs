@@ -5,15 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synapse Note</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <!-- ★★★ JSファイルを読み込むscriptタグを追加 (defer属性を忘れずに) ★★★ -->
+    <script src="/js/main.js" defer></script>
 </head>
 <body>
     <header>
         <div class="header-container">
-            <h1><a href="/">Synapse Note</a></h1>
-            <nav>
+            <h1 class="site-logo">
+                <a href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"></path>
+                        <path d="M8 12h.01"></path><path d="M12 12h.01"></path><path d="M16 12h.01"></path>
+                        <path d="M8 16h.01"></path><path d="M12 16h.01"></path><path d="M16 16h.01"></path>
+                    </svg>
+                    <span>Synapse Note</span>
+                </a>
+            </h1>
+            <!-- ★★★ nav要素に 'main-nav' クラスを追加 ★★★ -->
+            <nav class="main-nav">
                 <% if (typeof user !== 'undefined' && user) { %>
                     <a href="/public-quizzes">公開テスト</a>
-                    <a href="/my-quizzes">作成一覧</a>
+                    <a href="/quiz/my-quizzes">作成一覧</a>
                     <a href="/my-history">挑戦履歴</a>
                     <span><a href="/dashboard"><%= user.username %></a></span>
                     <a href="/logout">ログアウト</a>
@@ -23,6 +36,11 @@
                     <a href="/register">新規登録</a>
                 <% } %>
             </nav>
+            <!-- ★★★ ハンバーガーメニューボタンを追加 ★★★ -->
+            <button class="hamburger-menu" aria-label="メニューを開閉する" aria-expanded="false">
+                <svg class="icon-hamburger" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         </div>
     </header>
     <main>

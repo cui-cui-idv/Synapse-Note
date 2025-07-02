@@ -543,3 +543,307 @@ footer {
     .form-actions-split .button-danger { order: 2; }
     .form-actions-split .main-actions { order: 1; width: 100%; }
 }
+
+/* --- 14. ★★★ NEW: Custom File Input for Image Upload Page ★★★ --- */
+.form-group .file-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+.form-group input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.form-group .file-input-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 2.5rem 2rem;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.form-group .file-input-label:hover {
+    border-color: var(--primary-color);
+    background-color: #eaf2fd;
+}
+.file-input-label .icon {
+    width: 48px;
+    height: 48px;
+    color: var(--primary-color);
+    stroke-width: 1.5px;
+}
+.file-input-label .text {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+.file-input-label .subtext {
+    font-size: 0.9rem;
+    color: var(--muted-text-color);
+}
+.file-name-display {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--muted-text-color);
+    font-weight: 500;
+}
+
+/* ============================================= */
+/* --- 15. ★★★ NEW: Header Logo Styles ★★★ --- */
+/* ============================================= */
+.site-logo {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5rem; /* h1のデフォルトサイズをリセット */
+}
+
+.site-logo a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    color: var(--header-text-color); /* style.cssの変数を利用 */
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.site-logo a:hover {
+    opacity: 0.8;
+}
+
+.site-logo svg {
+    /* サイズはheader.ejsで直接指定しているので、ここでは不要 */
+    stroke: var(--primary-color); /* アイコンの色をプライマリカラーに */
+}
+
+/* ========================================================= */
+/* --- 16. ★★★ UPDATED: Responsive Header Styles ★★★ --- */
+/* ========================================================= */
+
+/* --- ハンバーガーメニューボタンの基本スタイル --- */
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 1001;
+    /* ★ アイコンを重ねるための設定を追加 */
+    position: relative;
+    width: 28px;
+    height: 28px;
+}
+.hamburger-menu svg {
+    width: 100%;
+    height: 100%;
+    color: var(--header-text-color);
+    /* ★ アイコンのトランジション（アニメーション）設定を追加 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+/* 最初は閉じるアイコンを隠す（transformで回転させておく） */
+.hamburger-menu .icon-close {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+/* --- 画面幅が768px以下の場合のスタイル --- */
+@media (max-width: 768px) {
+    /* (1) PC用のナビゲーションを隠す → アニメーションのために display から opacity に変更 */
+    .header-container .main-nav {
+        /* display: none; を削除 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        
+        /* ★ ここからアニメーション用のスタイル ★ */
+        opacity: 0; /* 透明にする */
+        visibility: hidden; /* 見えなくする（クリックもできなくする） */
+        transform: translateY(-10px); /* 少し上にずらす */
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    }
+    .header-container .main-nav a {
+        font-size: 1.5rem;
+        color: var(--text-color);
+    }
+    .header-container .main-nav span a {
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    /* (2) ハンバーガーボタンを表示する */
+    .hamburger-menu {
+        display: block;
+    }
+
+    /* (3) メニューが開いたときのスタイル */
+    header.mobile-menu-open .main-nav {
+        /* ★ アニメーション後の状態を指定 ★ */
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    /* (4) メニューが開いたときのアイコン切り替え */
+    header.mobile-menu-open .hamburger-menu .icon-hamburger {
+        opacity: 0;
+        transform: rotate(90deg);
+    }
+    header.mobile-menu-open .hamburger-menu .icon-close {
+        opacity: 1;
+        transform: rotate(0deg);
+        color: var(--text-color);
+    }
+}
+
+/* =================================================== */
+/* --- 17. ★★★ NEW: Quiz Result Page Styles ★★★ --- */
+/* =================================================== */
+.result-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+.result-summary {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+.quiz-title-result {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin: 0.5rem 0 1.5rem;
+}
+.score-display {
+    margin-bottom: 1rem;
+}
+.score-value {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.score-divider, .score-max {
+    font-size: 1.5rem;
+    color: var(--muted-text-color);
+}
+.score-label {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-left: 0.5rem;
+}
+.result-message {
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.result-item {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+.result-item-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1.2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.result-item.correct .result-item-header { background-color: #e6f4ea; }
+.result-item.incorrect .result-item-header { background-color: #fce8e6; }
+
+.question-number { font-weight: 600; }
+.question-points { font-size: 0.9rem; color: var(--muted-text-color); }
+.result-mark {
+    margin-left: auto;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    font-size: 0.9rem;
+}
+.result-item.correct .result-mark { color: #1e8e3e; background-color: #c6f0d4; }
+.result-item.incorrect .result-mark { color: #c5221f; background-color: #fdd8d6; }
+
+.question-text-result {
+    padding: 1.2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.answer-group {
+    padding: 0 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.answer-box {
+    padding: 1rem;
+    border-radius: var(--border-radius-small);
+}
+.answer-box.your-answer { background-color: #f8f9fa; }
+.answer-box.correct-answer { background-color: #e6f4ea; border: 1px solid #b7e1c6; }
+.answer-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted-text-color);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+.answer-text {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.feedback-box {
+    padding: 1.2rem;
+    background-color: #f1f3f5;
+    border-top: 1px solid var(--border-color);
+}
+.feedback-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted-text-color);
+    margin-bottom: 0.5rem;
+}
+.feedback-text {
+    margin: 0;
+}
+
+.result-actions {
+    margin-top: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}

@@ -1,59 +1,83 @@
 <%- include('partials/header') %>
 
-<div class="form-container">
-    <h2 class="page-title">テスト自動作成</h2>
-    <p class="form-description">科目、学年、テーマなどを入力すると、AIが最適な問題配分でテストを自動作成します。</p>
-
-    <form action="/create-quiz" method="POST">
-        <div class="form-group">
-            <label for="title">テスト名 (任意)</label>
-            <input type="text" id="title" name="title" placeholder="例: 1学期 期末試験対策">
-            <small class="form-text">入力しない場合、テーマに基づいて自動で名前が設定されます。</small>
-        </div>
-
-        <div class="form-group">
-            <label for="subject">科目</label>
-            <select id="subject" name="subject" required>
-                <option value="英語">英語</option>
-                <option value="数学">数学</option>
-                <option value="国語">国語</option>
-                <option value="理科">理科</option>
-                <option value="社会">社会</option>
-                <option value="その他">その他</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="difficulty">学年</label>
-            <select id="difficulty" name="difficulty" required>
-                <option value="中学1年生">中学1年生</option>
-                <option value="中学2年生">中学2年生</option>
-                <option value="中学3年生">中学3年生</option>
-                <option value="高校1年生" selected>高校1年生</option>
-                <option value="高校2年生">高校2年生</option>
-                <option value="高校3年生">高校3年生</option>
-                <option value="大学レベル">大学レベル</option>
-                <option value="一般">一般</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="topic">分野・テーマ</label>
-            <input type="text" id="topic" name="topic" placeholder="例: 不定詞, 二次関数" required>
-        </div>
-
-        <div class="form-group">
-            <label for="num_questions">おおよその問題数</label>
-            <input type="number" id="num_questions" name="num_questions" min="3" max="20" value="5" required>
-        </div>
+<main>
+    <div class="form-container">
+        <h2 class="page-title">新しい問題を作成する</h2>
+        <p class="form-description">以下の項目を入力して、AIにオリジナルの問題を作成させましょう。</p>
         
-        <div class="form-group">
-            <label for="example">例題・参考文 (任意)</label>
-            <textarea id="example" name="example" rows="4" placeholder="特に重点的に出題してほしい内容や、参考にしてほしい文章があれば入力します。"></textarea>
-        </div>
+        <form action="/quiz/create" method="POST">
+            <div class="form-group">
+                <label for="title">テストのタイトル（任意）</label>
+                <input type="text" id="title" name="title" placeholder="例: 期末対策！英単語テスト">
+                <p class="form-text">入力しない場合、AIが自動でタイトルを生成します。</p>
+            </div>
 
-        <button type="submit" class="button">テストを生成する</button>
-    </form>
-</div>
+            <div class="form-group">
+                <label for="subject">科目</label>
+                <select id="subject" name="subject" required>
+                    <option value="" disabled selected>科目を選択してください</option>
+                    <option value="国語">国語</option>
+                    <option value="数学">数学</option>
+                    <option value="理科">理科</option>
+                    <option value="社会">社会</option>
+                    <option value="英語">英語</option>
+                    <option value="音楽">音楽</option>
+                    <option value="美術">美術</option>
+                    <option value="技術・家庭">技術・家庭</option>
+                    <option value="保健体育">保健体育</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="topic">分野・テーマ</label>
+                <input type="text" id="topic" name="topic" required placeholder="例: 不定詞、二次関数、安土桃山時代">
+            </div>
+
+            <div class="form-group">
+                <label for="difficulty">対象学年（目安）</label>
+                <select id="difficulty" name="difficulty" required>
+                    <option value="" disabled selected>学年を選択してください</option>
+                    <optgroup label="小学生">
+                        <option value="小学1年生">小学1年生</option>
+                        <option value="小学2年生">小学2年生</option>
+                        <option value="小学3年生">小学3年生</option>
+                        <option value="小学4年生">小学4年生</option>
+                        <option value="小学5年生">小学5年生</option>
+                        <option value="小学6年生">小学6年生</option>
+                    </optgroup>
+                    <optgroup label="中学生">
+                        <option value="中学1年生">中学1年生</option>
+                        <option value="中学2年生">中学2年生</option>
+                        <option value="中学3年生">中学3年生</option>
+                    </optgroup>
+                    <optgroup label="高校生">
+                        <option value="高校1年生">高校1年生</option>
+                        <option value="高校2年生">高校2年生</option>
+                        <option value="高校3年生">高校3年生</option>
+                    </optgroup>
+                    <optgroup label="一般・その他">
+                        <option value="一般初級">一般初級</option>
+                        <option value="一般中級">一般中級</option>
+                        <option value="一般上級">一般上級</option>
+                        <option value="全般">全般</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="num_questions">問題数</label>
+                <input type="number" id="num_questions" name="num_questions" min="1" max="20" value="5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="example">参考情報・例文（任意）</label>
+                <textarea id="example" name="example" rows="5" placeholder="特定の単語リストや、参考にしてほしい例文などがあれば入力してください。"></textarea>
+            </div>
+
+            <button type="submit" class="button">問題を生成して挑戦する</button>
+        </form>
+    </div>
+</main>
 
 <%- include('partials/footer') %>

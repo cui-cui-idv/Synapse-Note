@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 3000;
 
 // Firebase Admin SDKの初期化
 try {
+  // 環境変数 GOOGLE_APPLICATION_CREDENTIALS が設定されていれば引数は不要です
   admin.initializeApp();
   console.log("Firebase Admin SDK initialized successfully.");
 } catch (error) {
@@ -37,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // これにより、Cloudflareから転送された、真のユーザーIPアドレスを認識し、
 // 同時に、secure: true のクッキーが、完璧に機能します。
 if (process.env.NODE_ENV === 'production') {
-    app.set('trust proxy', true);
+    app.set('trust proxy', 1); // `true`または`1`を設定
 }
 
 // セッションの設定 (FirestoreStoreを使用)
@@ -60,10 +61,17 @@ app.use(session({
 }));
 
 // ----------------------------------------------------------------
-// 3. ルーターの読み込み
+// 3. ルーターの読み込み (★ここを修正・統合しました★)
 // ----------------------------------------------------------------
-const appRoutes = require('./routes/appRoutes');
-app.use('/', appRoutes);
+// 機能ごとに分割したルーターファイルを読み込みます
+const indexRoutes = require('./routes/index');
+const authRoutes = require('./routes/auth');
+const quizRoutes = require('./routes/quizzes');
+
+// 各ルーターを適切なパスにマウント（割り当て）します
+app.use('/', indexRoutes); // '/', '/dashboard', '/my-history' などを担当
+app.use('/', authRoutes);  // '/login', '/register', '/logout' などを担当
+app.use('/quiz', quizRoutes); // クイズ関連のパスはすべて '/quiz' プレフィックスで集約
 
 // ----------------------------------------------------------------
 // 4. サーバーの起動
