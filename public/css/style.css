@@ -1117,3 +1117,250 @@ footer {
   .image-preview-wrapper { max-width: 98vw; }
   .image-preview { max-width: 100vw; max-height: 32vw; }
 }
+
+/* ====================================================================
+   Responsive Image Upload Preview Styles
+   - Ensures uploaded image previews fit well on both PC and mobile.
+   - Prevents preview images from being too large or overflowing container.
+   ==================================================================== */
+
+/* --- Desktop & Default --- */
+.image-preview-wrapper {
+  width: 100%;
+  max-width: 360px;     /* Restrict preview area width */
+  margin: 1.2em auto 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.image-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 260px;    /* Prevents vertical overflow */
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px #0002;
+  object-fit: contain;
+  background: #f6f7f9;
+  margin: 0 auto;
+  border: 1px solid #e1e3e8;
+  transition: box-shadow 0.15s, border 0.15s;
+}
+
+/* --- Responsive: Tablet & Mobile --- */
+@media (max-width: 900px) {
+  .image-preview-wrapper {
+    max-width: 90vw;
+  }
+  .image-preview {
+    max-width: 90vw;
+    max-height: 36vw;  /* Keep it visually balanced on tablet/mobile */
+  }
+}
+
+@media (max-width: 600px) {
+  .image-preview-wrapper {
+    max-width: 98vw;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .image-preview {
+    max-width: 98vw;
+    max-height: 42vw;
+    border-radius: 7px;
+  }
+}
+
+/* --- Extra: Prevent Huge Images in Edge Cases --- */
+.image-preview {
+  /* Absolute upper-bounds, just in case */
+  max-width: 390px;
+  max-height: 320px;
+}
+
+/* --- Optional: Add a subtle border or background if desired
+.image-preview {
+  border: 1px solid #e3e6eb;
+  background: #fafbfc;
+}
+*/
+
+/* --- Example: Animate on file selection (optional UX polish) --- */
+.image-preview[style*="display: block"] {
+  animation: fadeInImg 0.35s ease;
+}
+@keyframes fadeInImg {
+  from { opacity: 0; transform: scale(0.97);}
+  to   { opacity: 1; transform: scale(1);}
+}
+
+/* === Manual Quiz Creation Page (manual-create.ejs) - Enhanced for existing style.css === */
+
+/* ---- Wrapper for all questions ---- */
+#questionsArea {
+  margin-bottom: 2rem;
+}
+
+/* ---- Individual question card ---- */
+.question-editor-card {
+  background: #f6f9fc;
+  border: 1px solid #e2e5e8;
+  border-radius: 8px;
+  padding: 18px 12px 12px 12px;
+  margin-bottom: 18px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(80,130,230,0.06);
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+.question-editor-card label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 7px;
+  color: #2d3245;
+}
+.question-editor-card input[type="text"],
+.question-editor-card input[type="number"],
+.question-editor-card select {
+  display: inline-block;
+  width: auto;
+  min-width: 160px;
+  margin-bottom: 7px;
+  margin-right: 10px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  font-size: 1rem;
+}
+.question-editor-card input[type="number"] { max-width: 72px; }
+
+/* ---- Option editing area ---- */
+.options-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+.options-area-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+.options-area input[type="text"] {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 320px;
+  margin-right: 4px;
+  margin-bottom: 6px;
+}
+
+/* ---- Manual quiz page buttons ---- */
+.mc-btn {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  margin-left: 7px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px #0001;
+  outline: none;
+  vertical-align: middle;
+  line-height: 1.1;
+}
+/* Option Remove */
+.remove-option-btn, .mc-btn-remove {
+  background: #ffeaea;
+  color: #c72020;
+}
+.remove-option-btn:hover, .mc-btn-remove:hover {
+  background: #ffcccc;
+  color: #8a1010;
+}
+/* Option Add */
+.add-option-btn, .mc-btn-add {
+  background: #e7f4ff;
+  color: #2176bd;
+}
+.add-option-btn:hover, .mc-btn-add:hover {
+  background: #cfe7fc;
+  color: #164c70;
+}
+/* Question Delete */
+.delete-question-btn, .mc-btn-delete {
+  background: #ffdce0;
+  color: #a33;
+  padding: 7px 18px;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 10px;
+  margin-bottom: 0;
+  margin-left: 0;
+  display: block;
+  width: fit-content;
+}
+.delete-question-btn:hover, .mc-btn-delete:hover {
+  background: #ffc6c6;
+  color: #7d2020;
+}
+
+/* ---- Add question button ---- */
+#addQuestionBtn {
+  display: inline-block;
+  margin-bottom: 2rem;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1.08rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#addQuestionBtn:hover {
+  background: var(--primary-hover-color);
+}
+/* ---- Submit button ---- */
+#manualQuizForm button[type="submit"] {
+  width: 100%;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 0;
+  font-size: 1.13rem;
+  font-weight: 700;
+  margin-top: 1.3rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#manualQuizForm button[type="submit"]:hover {
+  background: var(--primary-hover-color);
+}
+
+/* ---- Responsive adjustments ---- */
+@media (max-width: 600px) {
+  .form-container { padding: 1.2rem !important; }
+  .question-editor-card { padding: 10px 4px 8px 4px; }
+  .options-area input[type="text"] { max-width: 100%; }
+  .mc-btn,
+  .remove-option-btn,
+  .add-option-btn,
+  .delete-question-btn {
+    padding: 6px 10px;
+    font-size: 0.97rem;
+  }
+}
