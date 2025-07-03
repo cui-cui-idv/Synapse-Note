@@ -20,7 +20,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // --- Multer: 画像ファイルはメモリに一時保存 ---
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // 10MBまで
+const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB/枚
 
 // --- ログイン必須ミドルウェア ---
 function requireLogin(req, res, next) {
@@ -50,20 +50,20 @@ router.get('/create-from-image', requireLogin, (req, res) => {
 /**
  * 画像アップロード&クイズ自動生成
  */
-router.post('/generate-from-image', requireLogin, upload.single('textbookImage'), async (req, res) => {
+router.post('/generate-from-image', requireLogin, upload.array('textbookImage', 5), async (req, res) => {
     try {
-        if (!req.file) {
+        if (!req.files || req.files.length === 0) {
             return res.render('create-from-image', { user: req.session.user, error: "画像ファイルが選択されていません。" });
         }
 
         const { subject, difficulty, num_questions, topic, example } = req.body;
-        const imagePart = fileToGenerativePart(req.file.buffer, req.file.mimetype);
+        const imageParts = req.files.map(f => fileToGenerativePart(f.buffer, f.mimetype));
 
         // STEP 1: クイズ自動生成プロンプト
         const generationPrompt = `あなたは、提供された画像内容をもとに、正確かつ教育的価値の高いクイズを作成する専門家です。
 
 # 画像の内容
-この画像は教科書やノートの一部です。その内容を正確に読み取り、以下の条件に従って問題を作成してください。
+これらの画像は教科書やノートの一部です。その内容を正確に読み取り、以下の条件に従って問題を作成してください。
 
 # 作成条件
 - 科目: ${subject}
@@ -73,8 +73,8 @@ router.post('/generate-from-image', requireLogin, upload.single('textbookImage')
 - 問題数: 約${num_questions}問
 
 # 絶対的な指示
-1. **画像から読み取れる情報および分野・テーマ・参考情報（もし指定されていれば）をもとに、問題を作成してください。**
-2. **最重要：解答形式の制約を厳守すること。** 解答方法は「選択肢を選ぶ」「短い単語/数式を入力」「文章を記述する」の3種類のみです。作図や描画を要する問題は絶対に出題しないこと。
+1. **画像群から読み取れる情報および分野・テーマ・参考情報（もし指定されていれば）をもとに、問題を作成してください。**
+2. **最重要：解答形式の制約を厳守すること。** 解答方法は「選択肢を選ぶ」「短い単語/数式を入力」「文章を記述する」の3種類のみです。作図や描画を要する問題や、資料がなければ解けない問題は絶対に出題しないこと。
 3. 問題形式は「選択式(multiple_choice)」「短答式(short_answer)」「記述式(descriptive)」を、テーマや画像内容に応じて最も効果的な配分で組み合わせてください。
 4. 各問題に、難易度や内容に応じて適切な配点(points)を必ず割り振ってください。
 5. **同じ単語や内容を問う問題はテスト内に1問まで（重複出題禁止）。**
@@ -85,14 +85,14 @@ router.post('/generate-from-image', requireLogin, upload.single('textbookImage')
 # JSON出力形式（解説は不要）
 [{"type": "multiple_choice", "question": "問題文", "options": ["選択肢1", "選択肢2"], "answer": "正解の文字列", "points": 10}]`;
 
-        const generationResult = await model.generateContent([generationPrompt, imagePart]);
+        const generationResult = await model.generateContent([generationPrompt, ...imageParts]);
         const initialJsonText = generationResult.response.text().match(/\[[\s\S]*\]/)[0];
         const initialQuestions = JSON.parse(initialJsonText);
 
-        // STEP 2: 自動生成クイズの検証＆修正
-        const verificationPrompt = `あなたは、極めて厳格で正確な校正担当AIです。あなたの唯一の任務は、提示された画像に基づき、AIが生成したクイズの間違いを検出・修正することです。
+        // STEP 2: 検証
+        const verificationPrompt = `あなたは、極めて厳格で正確な校正担当AIです。あなたの唯一の任務は、提示された画像群に基づき、AIが生成したクイズの間違いを検出・修正することです。
 # 状況
-あるAIが画像からクイズを生成しましたが、読み間違えによる誤りが含まれている可能性があります。
+AIが画像からクイズを生成しましたが、読み間違えによる誤りが含まれている可能性があります。
 # あなたのタスク
 1. 提示された「生成済みクイズ(JSON)」の各問題と解答を、画像の内容と一つ一つ、厳密に照合してください。
 2. **解答が間違っている場合：** 画像から読み取れる正しい答えに「answer」フィールドを修正してください。
@@ -104,7 +104,7 @@ router.post('/generate-from-image', requireLogin, upload.single('textbookImage')
 ${JSON.stringify(initialQuestions, null, 2)}
 `;
 
-        const verificationResult = await model.generateContent([verificationPrompt, imagePart]);
+        const verificationResult = await model.generateContent([verificationPrompt, ...imageParts]);
         const verifiedJsonText = verificationResult.response.text().match(/\[[\s\S]*\]/)[0];
         const verifiedQuestions = JSON.parse(verifiedJsonText);
 
@@ -123,6 +123,7 @@ ${JSON.stringify(initialQuestions, null, 2)}
         res.render('create-from-image', { user: req.session.user, error: "問題の生成中にエラーが発生しました。AIが画像を正しく読み取れなかった可能性があります。画像の角度や明るさを変えて、もう一度お試しください。" });
     }
 });
+
 
 // ===================== テキスト入力からクイズ作成（AI利用） =====================
 

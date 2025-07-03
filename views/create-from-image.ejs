@@ -24,13 +24,11 @@
                         <span class="text">ファイルを選択 または 撮影</span>
                         <span class="subtext">または、ここにドラッグ＆ドロップ</span>
                     </label>
-                    <input type="file" id="textbookImage" name="textbookImage" accept="image/*" required>
+                    <input type="file" id="textbookImage" name="textbookImage" accept="image/*" required multiple>
                 </div>
                 <div id="fileNameDisplay" class="file-name-display"></div>
-                <!-- プレビュー画像（選択時のみ表示） -->
-                <div class="image-preview-wrapper">
-                  <img id="preview" class="image-preview" style="display:none;">
-                </div>
+                <!-- 複数プレビュー画像表示 -->
+                <div class="image-preview-wrapper" id="previewWrapper"></div>
             </div>
 
             <!-- 科目 -->
@@ -92,32 +90,36 @@
 <%- include('partials/footer') %>
 
 <script>
-  // ファイルが選択されたら、ファイル名を表示する＋画像プレビュー
+  // 複数ファイル名・複数プレビュー対応
   const fileInput = document.getElementById('textbookImage');
   const fileNameDisplay = document.getElementById('fileNameDisplay');
-  const preview = document.getElementById('preview');
+  const previewWrapper = document.getElementById('previewWrapper');
   fileInput.addEventListener('change', function() {
+    previewWrapper.innerHTML = '';
     if (this.files && this.files.length > 0) {
-      fileNameDisplay.textContent = `選択中のファイル: ${this.files[0].name}`;
-      // 画像プレビュー
-      const file = this.files[0];
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          preview.src = evt.target.result;
-          preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      } else {
-        preview.style.display = 'none';
-      }
+      let names = [];
+      Array.from(this.files).forEach((file, idx) => {
+        names.push(file.name);
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            const img = document.createElement('img');
+            img.className = 'image-preview';
+            img.style.display = 'block';
+            img.src = evt.target.result;
+            img.alt = `preview${idx+1}`;
+            previewWrapper.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      fileNameDisplay.textContent = `選択中のファイル: ${names.join(', ')}`;
     } else {
       fileNameDisplay.textContent = '';
-      preview.style.display = 'none';
     }
   });
 
-  // ドラッグ＆ドロップ対応
+  // ドラッグ＆ドロップ複数対応
   const fileInputLabel = document.getElementById('fileInputLabel');
   fileInputLabel.addEventListener('dragover', function(e) {
     e.preventDefault();
