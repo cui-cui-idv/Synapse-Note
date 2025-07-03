@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+
+<div class="profile-edit-container">
+    <div class="form-header">
+        <h1>プロフィール編集</h1>
+        <a href="/profile" class="btn btn-secondary">戻る</a>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-error">
+            <%= error %>
+        </div>
+    <% } %>
+
+    <form action="/profile/update" method="POST" class="profile-form">
+        <div class="form-group">
+            <label for="displayName">表示名 <span class="required">*</span></label>
+            <input 
+                type="text" 
+                id="displayName" 
+                name="displayName" 
+                value="<%= user.username || '' %>" 
+                required
+                maxlength="50"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="handle">ハンドル名（変更不可）</label>
+            <input 
+                type="text" 
+                id="handle" 
+                name="handle" 
+                value="<%= user.handle || '' %>"
+                disabled
+                readonly
+            >
+            <small class="help-text">ハンドル名は変更できません</small>
+        </div>
+
+        <div class="form-group">
+            <label for="bio">自己紹介</label>
+            <textarea 
+                id="bio" 
+                name="bio" 
+                rows="4" 
+                maxlength="500"
+                placeholder="自己紹介を入力してください..."
+            ><%= user.bio || '' %></textarea>
+            <div class="char-counter">
+                <span id="bioCounter">0</span>/500文字
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a href="/profile" class="btn btn-secondary">キャンセル</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // 文字数カウンター
+    const bioTextarea = document.getElementById('bio');
+    const bioCounter = document.getElementById('bioCounter');
+    
+    function updateCounter() {
+        const count = bioTextarea.value.length;
+        bioCounter.textContent = count;
+        
+        if (count > 450) {
+            bioCounter.style.color = '#e74c3c';
+        } else {
+            bioCounter.style.color = '#666';
+        }
+    }
+    
+    bioTextarea.addEventListener('input', updateCounter);
+    updateCounter(); // 初期表示
+</script>
+
+<%- include('partials/footer') %>

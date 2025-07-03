@@ -1,0 +1,80 @@
+<%- include('partials/header') %>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-info">
+            <h1><%= user.username || 'ユーザー' %></h1>
+            <p class="handle"><%= user.handle || '@unknown' %></p>
+            <p class="join-date">登録日: <%= user.createdAt ? new Date(user.createdAt._seconds * 1000).toLocaleDateString('ja-JP') : '不明' %></p>
+        </div>
+        <% if (isOwnProfile) { %>
+            <div class="profile-actions">
+                <a href="/profile/edit" class="btn btn-primary">プロフィール編集</a>
+            </div>
+        <% } %>
+    </div>
+
+    <% if (typeof success !== 'undefined' && success) { %>
+        <div class="alert alert-success">
+            プロフィールが正常に更新されました。
+        </div>
+    <% } %>
+
+    <div class="profile-content">
+        <div class="profile-section">
+            <h3>自己紹介</h3>
+            <div class="bio-content">
+                <% if (user.bio && user.bio.trim()) { %>
+                    <p><%= user.bio %></p>
+                <% } else { %>
+                    <p class="no-bio">
+                        <% if (isOwnProfile) { %>
+                            自己紹介が設定されていません。
+                        <% } else { %>
+                            このユーザーは自己紹介を設定していません。
+                        <% } %>
+                    </p>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h3>統計情報</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number"><%= stats.createdQuizzes %></span>
+                    <span class="stat-label">
+                        <% if (isOwnProfile) { %>
+                            作成したクイズ
+                        <% } else { %>
+                            公開クイズ
+                        <% } %>
+                    </span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number"><%= stats.takenQuizzes %></span>
+                    <span class="stat-label">受けたクイズ</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number"><%= stats.averageScore %>%</span>
+                    <span class="stat-label">平均スコア</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // URLパラメータから成功メッセージを表示
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === '1') {
+        setTimeout(() => {
+            const alert = document.querySelector('.alert-success');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }, 3000);
+    }
+</script>
+
+<%- include('partials/footer') %>

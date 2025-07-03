@@ -1364,3 +1364,321 @@ footer {
     font-size: 0.97rem;
   }
 }
+
+/* プロフィールページ共通スタイル */
+.profile-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.profile-info h1 {
+    margin: 0 0 0.5rem 0;
+    color: #1a202c;
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.profile-info .handle {
+    color: #4a90e2;
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.profile-info .join-date {
+    color: #718096;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.profile-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-section {
+    padding: 2rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.profile-section:last-child {
+    border-bottom: none;
+}
+
+.profile-section h3 {
+    margin: 0 0 1rem 0;
+    color: #1a202c;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.bio-content p {
+    margin: 0;
+    line-height: 1.6;
+    color: #4a5568;
+}
+
+.no-bio {
+    color: #a0aec0;
+    font-style: italic;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: #f7fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4a90e2;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #718096;
+    font-weight: 500;
+}
+
+/* プロフィール編集ページ */
+.profile-edit-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-header h1 {
+    margin: 0;
+    color: #1a202c;
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.profile-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #1a202c;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.required {
+    color: #e53e3e;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.form-group input:disabled {
+    background-color: #f7fafc;
+    color: #a0aec0;
+    cursor: not-allowed;
+}
+
+.help-text {
+    display: block;
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 0.25rem;
+}
+
+.char-counter {
+    text-align: right;
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #357abd;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: #718096;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #4a5568;
+    transform: translateY(-1px);
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #f0fff4;
+    border: 1px solid #9ae6b4;
+    color: #276749;
+}
+
+.alert-error {
+    background-color: #fed7d7;
+    border: 1px solid #feb2b2;
+    color: #c53030;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+    .profile-container,
+    .profile-edit-container {
+        margin: 1rem auto;
+        padding: 0 0.5rem;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .profile-section {
+        padding: 1.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .profile-form {
+        padding: 1.5rem;
+    }
+}
+
+/* ダークモード対応（既存のCSSに合わせて） */
+@media (prefers-color-scheme: dark) {
+    .profile-header,
+    .profile-content,
+    .profile-form {
+        background: #2d3748;
+        color: #e2e8f0;
+    }
+
+    .profile-info h1,
+    .profile-section h3,
+    .form-header h1,
+    .form-group label {
+        color: #e2e8f0;
+    }
+
+    .bio-content p {
+        color: #cbd5e0;
+    }
+
+    .stat-item {
+        background: #4a5568;
+        border-color: #718096;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        background: #4a5568;
+        border-color: #718096;
+        color: #e2e8f0;
+    }
+
+    .form-group input:disabled {
+        background-color: #2d3748;
+        color: #718096;
+    }
+}
