@@ -50,17 +50,39 @@ router.get('/create-from-image', requireLogin, (req, res) => {
 /**
  * 画像アップロード&クイズ自動生成
  */
-router.post('/generate-from-image', requireLogin, upload.array('textbookImage', 5), async (req, res) => {
-    try {
-        if (!req.files || req.files.length === 0) {
-            return res.render('create-from-image', { user: req.session.user, error: "画像ファイルが選択されていません。" });
-        }
+router.post('/generate-from-image',
+    requireLogin,
+    (req, res, next) => {
+        upload.array('textbookImage', 5)(req, res, function (err) {
+            if (err instanceof multer.MulterError) {
+                // Multerの制限エラー
+                let msg = "画像アップロードエラー: ";
+                if (err.code === "LIMIT_UNEXPECTED_FILE") {
+                    msg += "一度にアップロードできる枚数は5枚までです。";
+                } else if (err.code === "LIMIT_FILE_SIZE") {
+                    msg += "1枚あたり10MBまでの画像のみアップロードできます。";
+                } else {
+                    msg += err.message;
+                }
+                return res.render('create-from-image', { user: req.session.user, uploadError: msg });
+            } else if (err) {
+                // それ以外のアップロードエラー
+                return res.render('create-from-image', { user: req.session.user, uploadError: "画像アップロードエラー: " + err.message });
+            }
+            next();
+        });
+    },
+    async (req, res) => {
+        try {
+            if (!req.files || req.files.length === 0) {
+                return res.render('create-from-image', { user: req.session.user, error: "画像ファイルが選択されていません。" });
+            }
 
-        const { subject, difficulty, num_questions, topic, example } = req.body;
-        const imageParts = req.files.map(f => fileToGenerativePart(f.buffer, f.mimetype));
+            const { subject, difficulty, num_questions, topic, example } = req.body;
+            const imageParts = req.files.map(f => fileToGenerativePart(f.buffer, f.mimetype));
 
-        // STEP 1: クイズ自動生成プロンプト
-        const generationPrompt = `あなたは、提供された画像内容をもとに、正確かつ教育的価値の高いクイズを作成する専門家です。
+            // STEP 1: クイズ自動生成プロンプト
+            const generationPrompt = `あなたは、提供された画像内容をもとに、正確かつ教育的価値の高いクイズを作成する専門家です。
 
 # 画像の内容
 これらの画像は教科書やノートの一部です。その内容を正確に読み取り、以下の条件に従って問題を作成してください。
@@ -75,22 +97,23 @@ router.post('/generate-from-image', requireLogin, upload.array('textbookImage', 
 # 絶対的な指示
 1. **画像群から読み取れる情報および分野・テーマ・参考情報（もし指定されていれば）をもとに、問題を作成してください。**
 2. **最重要：解答形式の制約を厳守すること。** 解答方法は「選択肢を選ぶ」「短い単語/数式を入力」「文章を記述する」の3種類のみです。作図や描画を要する問題や、資料がなければ解けない問題は絶対に出題しないこと。
-3. 問題形式は「選択式(multiple_choice)」「短答式(short_answer)」「記述式(descriptive)」を、テーマや画像内容に応じて最も効果的な配分で組み合わせてください。
-4. 各問題に、難易度や内容に応じて適切な配点(points)を必ず割り振ってください。
-5. **同じ単語や内容を問う問題はテスト内に1問まで（重複出題禁止）。**
-6. **必ず全ての問題に、画像・情報から正しく導かれる唯一の答え（answer）を1つ設定し、解答漏れ・誤答がないか作成後に再チェックしてください。** 答えが画像から読み取れない場合、その問題は作成・出題しないでください。
-7. 問題文や選択肢から他の問題の答えが推測できないよう、独立性を保つこと。
-8. **出力は下記のJSON配列「のみ」。前後に説明文や\`\`\`json、補足など余計な文字列は絶対に含めないでください。**
+3. 表などがないとわからない問題は出題しないでください。もし必要な場合は表をさくせいしてください。
+4. 問題形式は「選択式(multiple_choice)」「短答式(short_answer)」「記述式(descriptive)」を、テーマや画像内容に応じて最も効果的な配分で組み合わせてください。
+5. 各問題に、難易度や内容に応じて適切な配点(points)を必ず割り振ってください。
+6. **同じ単語や内容を問う問題はテスト内に1問まで（重複出題禁止）。**
+7. **必ず全ての問題に、画像・情報から正しく導かれる唯一の答え（answer）を1つ設定し、解答漏れ・誤答がないか作成後に再チェックしてください。** 答えが画像から読み取れない場合、その問題は作成・出題しないでください。
+8. 問題文や選択肢から他の問題の答えが推測できないよう、独立性を保つこと。
+9. **出力は下記のJSON配列「のみ」。前後に説明文や\`\`\`json、補足など余計な文字列は絶対に含めないでください。**
 
 # JSON出力形式（解説は不要）
 [{"type": "multiple_choice", "question": "問題文", "options": ["選択肢1", "選択肢2"], "answer": "正解の文字列", "points": 10}]`;
 
-        const generationResult = await model.generateContent([generationPrompt, ...imageParts]);
-        const initialJsonText = generationResult.response.text().match(/\[[\s\S]*\]/)[0];
-        const initialQuestions = JSON.parse(initialJsonText);
+            const generationResult = await model.generateContent([generationPrompt, ...imageParts]);
+            const initialJsonText = generationResult.response.text().match(/\[[\s\S]*\]/)[0];
+            const initialQuestions = JSON.parse(initialJsonText);
 
-        // STEP 2: 検証
-        const verificationPrompt = `あなたは、極めて厳格で正確な校正担当AIです。あなたの唯一の任務は、提示された画像群に基づき、AIが生成したクイズの間違いを検出・修正することです。
+            // STEP 2: 検証
+            const verificationPrompt = `あなたは、極めて厳格で正確な校正担当AIです。あなたの唯一の任務は、提示された画像群に基づき、AIが生成したクイズの間違いを検出・修正することです。
 # 状況
 AIが画像からクイズを生成しましたが、読み間違えによる誤りが含まれている可能性があります。
 # あなたのタスク
@@ -104,25 +127,26 @@ AIが画像からクイズを生成しましたが、読み間違えによる誤
 ${JSON.stringify(initialQuestions, null, 2)}
 `;
 
-        const verificationResult = await model.generateContent([verificationPrompt, ...imageParts]);
-        const verifiedJsonText = verificationResult.response.text().match(/\[[\s\S]*\]/)[0];
-        const verifiedQuestions = JSON.parse(verifiedJsonText);
+            const verificationResult = await model.generateContent([verificationPrompt, ...imageParts]);
+            const verifiedJsonText = verificationResult.response.text().match(/\[[\s\S]*\]/)[0];
+            const verifiedQuestions = JSON.parse(verifiedJsonText);
 
-        const draftQuiz = {
-            title: `${subject}のテスト (画像から生成)`,
-            subject,
-            difficulty,
-            questions: verifiedQuestions,
-            visibility: 'private',
-        };
+            const draftQuiz = {
+                title: `${subject}のテスト (画像から生成)`,
+                subject,
+                difficulty,
+                questions: verifiedQuestions,
+                visibility: 'private',
+            };
 
-        res.render('solve-quiz', { user: req.session.user, quiz: draftQuiz, isDraft: true });
+            res.render('solve-quiz', { user: req.session.user, quiz: draftQuiz, isDraft: true });
 
-    } catch (error) {
-        console.error("画像からのクイズ作成エラー:", error);
-        res.render('create-from-image', { user: req.session.user, error: "問題の生成中にエラーが発生しました。AIが画像を正しく読み取れなかった可能性があります。画像の角度や明るさを変えて、もう一度お試しください。" });
+        } catch (error) {
+            console.error("画像からのクイズ作成エラー:", error);
+            res.render('create-from-image', { user: req.session.user, error: "問題の生成中にエラーが発生しました。AIが画像を正しく読み取れなかった可能性があります。画像の角度や明るさを変えて、もう一度お試しください。" });
+        }
     }
-});
+);
 
 
 // ===================== テキスト入力からクイズ作成（AI利用） =====================

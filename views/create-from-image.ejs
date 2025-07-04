@@ -8,6 +8,9 @@
         <% if (locals.error) { %>
             <div class="error-message"><%= error %></div>
         <% } %>
+        <% if (locals.uploadError) { %>
+            <div class="error-message upload-error"><%= uploadError %></div>
+        <% } %>
 
         <form action="/quiz/generate-from-image" method="POST" enctype="multipart/form-data">
             <!-- 画像ファイル -->
@@ -89,8 +92,55 @@
 
 <%- include('partials/footer') %>
 
+<!-- スマホ用追加CSSとプレビュー調整CSS -->
+<style>
+.image-preview-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.image-preview-wrapper img.image-preview {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+@media (max-width: 600px) {
+  .form-container {
+    padding: 10px;
+  }
+  .image-preview-wrapper img.image-preview {
+    width: 64px;
+    height: 64px;
+  }
+  .file-input-label {
+    font-size: 16px;
+    padding: 12px 8px;
+  }
+  .file-name-display {
+    font-size: 14px;
+    word-break: break-all;
+  }
+}
+.upload-error {
+  color: #fff;
+  background-color: #ea4a4a;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  margin-bottom: 1em;
+  font-weight: bold;
+  text-align: center;
+}
+</style>
+
 <script>
-  // 複数ファイル名・複数プレビュー対応
+  // ファイルが選択されたら、ファイル名を表示する＋複数プレビュー
   const fileInput = document.getElementById('textbookImage');
   const fileNameDisplay = document.getElementById('fileNameDisplay');
   const previewWrapper = document.getElementById('previewWrapper');
@@ -105,7 +155,6 @@
           reader.onload = function(evt) {
             const img = document.createElement('img');
             img.className = 'image-preview';
-            img.style.display = 'block';
             img.src = evt.target.result;
             img.alt = `preview${idx+1}`;
             previewWrapper.appendChild(img);
@@ -119,7 +168,7 @@
     }
   });
 
-  // ドラッグ＆ドロップ複数対応
+  // ドラッグ＆ドロップ対応
   const fileInputLabel = document.getElementById('fileInputLabel');
   fileInputLabel.addEventListener('dragover', function(e) {
     e.preventDefault();
